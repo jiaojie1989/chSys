@@ -15,4 +15,16 @@ package me.jiaojie.ch.model.basic;
  * @author jiaojie <jiaojie@staff.sina.com>
  */
 public class OrderDetail {
+
+    protected String orderId;
+    protected String sid;
+
+    public OrderDetail(String orderId, String sid) {
+        this.orderId = orderId;
+        this.sid = sid;
+    }
+    
+    public OrderDetail() {
+    
+    }
 }

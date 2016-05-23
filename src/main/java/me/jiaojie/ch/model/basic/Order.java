@@ -22,6 +22,7 @@ public class Order {
     protected OrderDetail detail;
     protected BuySellType type;
     protected Symbol symbol;
+    protected Symbol succSymbol = null;
     protected Price price;
     protected boolean deal = false;
     protected boolean canDeal = false;
@@ -35,12 +36,25 @@ public class Order {
         this.canDeal = this.symbol.canDeal(type, price);
     }
 
+    public Symbol getSymbol() {
+        return this.symbol;
+    }
+
+    public void setSucc(Symbol dealSymbol) {
+        this.succSymbol = dealSymbol;
+        this.deal = true;
+    }
+
     public boolean isDeal() {
         return this.deal;
     }
 
     public boolean canDeal() {
         return this.canDeal;
+    }
+
+    public Price getOrderPrice() {
+        return this.price;
     }
 
     @Override

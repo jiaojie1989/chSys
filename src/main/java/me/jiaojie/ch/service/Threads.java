@@ -28,6 +28,5 @@ public class Threads {
         HealthReportor = Executors.newScheduledThreadPool(1);
         PriceHandler = Executors.newFixedThreadPool(10);
         OrderHandler = Executors.newFixedThreadPool(3);
-        SenderHandler = Executors.1
     }
 }

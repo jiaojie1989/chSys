@@ -10,10 +10,17 @@
  */
 package me.jiaojie.ch.service.runner;
 
+import me.jiaojie.ch.model.basic.Symbol;
+
 /**
  *
  * @author jiaojie <jiaojie@staff.sina.com>
  */
-public class BuyOrder {
-    
+public class BuyOrder implements Runnable {
+
+    protected Symbol symbol;
+
+    @Override
+    public void run() {
+    }
 }

@@ -28,29 +28,33 @@ import me.jiaojie.ch.model.basic.Symbol;
 @Controller
 public class SymbolController {
 
-    @Autowired
-    private CarService carService;
+//    @Autowired
+//    private CarService carService;
 
-    @RequestMapping("/car/list")
-    public void carList(Model model) {
-        List<Car> carList = carService.findAll();
-        model.addAttribute("carList", carList);
-    }
-
-    @RequestMapping("/car/add")
-    public void carAdd() {
-    }
-
-    @RequestMapping(value = "/car/add", method = RequestMethod.POST)
-    public String carAddSubmit(@ModelAttribute("car") @Valid Car car, BindingResult result) {
-        if (result.hasErrors()) {
-            // show the form again, with the errors
-            return "car/add";
-        }
-
-        // validation was successful
-        carService.add(car);
-        return "redirect:/car/list";
+//    @RequestMapping("/car/list")
+//    public void carList(Model model) {
+//        List<Car> carList = carService.findAll();
+//        model.addAttribute("carList", carList);
+//    }
+//
+//    @RequestMapping("/car/add")
+//    public void carAdd() {
+//    }
+//
+//    @RequestMapping(value = "/car/add", method = RequestMethod.POST)
+//    public String carAddSubmit(@ModelAttribute("car") @Valid Car car, BindingResult result) {
+//        if (result.hasErrors()) {
+//            // show the form again, with the errors
+//            return "car/add";
+//        }
+//
+//        // validation was successful
+//        carService.add(car);
+//        return "redirect:/car/list";
+//    }
+    @RequestMapping("/test")
+    public void test() {
+        
     }
     
 }

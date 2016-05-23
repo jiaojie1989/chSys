@@ -32,6 +32,18 @@ public class Symbol {
         this.bid = bid;
     }
 
+    public SymbolName getSymbolName() {
+        return this.symbol;
+    }
+
+    public Price getBidPrice() {
+        return this.bid;
+    }
+
+    public Price getAskPrice() {
+        return this.ask;
+    }
+
     public boolean canDeal(BuySellType queryType, Price queryPrice) {
         return true;
     }

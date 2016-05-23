@@ -11,14 +11,17 @@
 package me.jiaojie.ch.service.runner;
 
 import me.jiaojie.ch.model.basic.Symbol;
+import me.jiaojie.ch.model.basic.Project;
 
 /**
  *
  * @author jiaojie <jiaojie@staff.sina.com>
  */
 public class AskPrice implements Runnable {
-    
+
     protected Symbol symbol;
+    protected Project project;
+    protected Runnable getProject;
 
     @Override
     public void run() {
