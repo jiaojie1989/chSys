@@ -37,6 +37,8 @@ import me.jiaojie.ch.model.basic.SymbolName;
 import me.jiaojie.ch.model.project.Cn;
 import me.jiaojie.ch.service.Threads;
 import me.jiaojie.ch.service.runner.SetPrice;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
  *
@@ -72,7 +74,8 @@ public class SymbolController {
 //        carService.add(car);
 //        return "redirect:/car/list";
 //    }
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @RequestMapping(value = {"/", "/welcome", "/index"}, method = {RequestMethod.GET, RequestMethod.POST}, produces = "text/plain")
+    @ResponseBody
     public String welcome() {
         return "Hello, World!";
     }
@@ -87,7 +90,7 @@ public class SymbolController {
         return output;
     }
 
-    @RequestMapping(value = "/test", method = RequestMethod.POST)
+    @RequestMapping(value = "/test", method = {RequestMethod.POST, RequestMethod.PUT})
     public void test() {
         InputStream is;
         try {
