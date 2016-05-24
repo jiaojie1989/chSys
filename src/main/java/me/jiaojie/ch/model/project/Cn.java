@@ -33,15 +33,16 @@ public class Cn extends Trade {
         this.init();
     }
 
+    @Override
     protected void init() {
-        this.buyOrderLock = new ConcurrentHashMap<SymbolName, Boolean>(this.initNum);
-        this.sellOrderLock = new ConcurrentHashMap<SymbolName, Boolean>(this.initNum);
-        this.buyOrderMap = new ConcurrentHashMap<SymbolName, TreeSet<Order>>(this.initNum);
-        this.sellOrderMap = new ConcurrentHashMap<SymbolName, TreeSet<Order>>(this.initNum);
-        this.priceMap= new ConcurrentHashMap<SymbolName, Symbol>(this.initNum);
+        this.buyOrderLock = new ConcurrentHashMap<String, Boolean>(this.initNum);
+        this.sellOrderLock = new ConcurrentHashMap<String, Boolean>(this.initNum);
+        this.buyOrderMap = new ConcurrentHashMap<String, TreeSet<Order>>(this.initNum);
+        this.sellOrderMap = new ConcurrentHashMap<String, TreeSet<Order>>(this.initNum);
+        this.priceMap= new ConcurrentHashMap<String, Symbol>(this.initNum);
     }
 
-    public Cn getInstance() {
+    public static Cn getInstance() {
         if (instance == null) {
             synchronized (Cn.class) {
                 if (instance == null) {

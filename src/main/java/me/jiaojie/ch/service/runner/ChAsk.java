@@ -17,11 +17,16 @@ import me.jiaojie.ch.model.basic.Project;
  *
  * @author jiaojie <jiaojie@staff.sina.com>
  */
-public class AskPrice implements Runnable {
+public class ChAsk implements Runnable {
 
     protected Symbol symbol;
     protected Project project;
     protected Runnable getProject;
+
+    public ChAsk(Symbol symbol, Project project) {
+        this.symbol = symbol;
+        this.project = project;
+    }
 
     @Override
     public void run() {

@@ -20,17 +20,30 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import java.io.InputStream;
 import org.apache.commons.io.IOUtils;
+import com.google.gson.Gson;
+import com.alibaba.fastjson.JSON;
+import java.util.Map;
+import com.alibaba.fastjson.TypeReference;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.BiConsumer;
 
 import me.jiaojie.ch.model.basic.Symbol;
+import me.jiaojie.ch.model.basic.PriceJsonObj;
+import me.jiaojie.ch.model.basic.SymbolName;
+import me.jiaojie.ch.model.project.Cn;
+import me.jiaojie.ch.service.Threads;
+import me.jiaojie.ch.service.runner.SetPrice;
 
 /**
  *
  * @author jiaojie <jiaojie@staff.sina.com>
  */
-@Controller
+//@Controller
+@RestController
 public class SymbolController {
 
     @Autowired
@@ -59,15 +72,55 @@ public class SymbolController {
 //        carService.add(car);
 //        return "redirect:/car/list";
 //    }
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public String welcome() {
+        return "Hello, World!";
+    }
+    
+    @RequestMapping(value = "/all", method = RequestMethod.GET)
+    public String getAll() {
+//        ConcurrentHashMap<String, Symbol> map = Cn.getInstance().getPriceMap();
+//        System.out.println(map);
+        Symbol symbol = Cn.getInstance().getSymbol(new SymbolName("BABA"));
+        System.out.println(symbol.getTimestamp());
+        String output = JSON.toJSONString(symbol);
+        return output;
+    }
+
     @RequestMapping(value = "/test", method = RequestMethod.POST)
     public void test() {
-        InputStream is = null;
+        InputStream is;
         try {
             is = request.getInputStream();
             String contentStr = IOUtils.toString(is, "utf-8");
             System.out.println(contentStr);
         } catch (IOException e) {
             System.out.println(e);
+        }
+    }
+
+    @RequestMapping(value = "/json", method = RequestMethod.POST)
+    public String testJson() {
+        Threads.Init();
+        String output = "";
+        InputStream is;
+        try {
+            is = request.getInputStream();
+            String contentStr = IOUtils.toString(is, "utf-8");
+            Map<String, PriceJsonObj> map = JSON.parseObject(contentStr, new TypeReference<Map<String, PriceJsonObj>>() {
+            });
+            map.forEach((String k, PriceJsonObj v) -> {
+                Threads.getPriceHandler().execute(new SetPrice(v, new SymbolName(k)));
+            });
+            output = "ok";
+        } catch (IOException e) {
+            System.out.println(e);
+            output = "io error";
+        } catch (Exception e) {
+            System.out.println(e);
+            output = "exception";
+        } finally {
+            return output;
         }
     }
 

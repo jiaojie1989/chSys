@@ -30,22 +30,34 @@ import me.jiaojie.ch.model.op.SellComparator;
 abstract public class Trade {
 
     protected Project project = null;
-    protected ConcurrentHashMap<SymbolName, Symbol> priceMap = null;
-    protected ConcurrentHashMap<SymbolName, TreeSet<Order>> sellOrderMap = null;
-    protected ConcurrentHashMap<SymbolName, Boolean> sellOrderLock = null;
-    protected ConcurrentHashMap<SymbolName, TreeSet<Order>> buyOrderMap = null;
-    protected ConcurrentHashMap<SymbolName, Boolean> buyOrderLock = null;
+    protected ConcurrentHashMap<String, Symbol> priceMap = null;
+    protected ConcurrentHashMap<String, TreeSet<Order>> sellOrderMap = null;
+    protected ConcurrentHashMap<String, Boolean> sellOrderLock = null;
+    protected ConcurrentHashMap<String, TreeSet<Order>> buyOrderMap = null;
+    protected ConcurrentHashMap<String, Boolean> buyOrderLock = null;
+
+    public ConcurrentHashMap<String, Symbol> getPriceMap() {
+        return this.priceMap;
+    }
 
     public Symbol getSymbol(SymbolName name) {
+        if (priceMap.containsKey(name.toString())) {
+            return priceMap.get(name.toString());
+        } else {
+            return null;
+        }
+    }
+    
+    public Symbol getSymbol(String name) {
         if (priceMap.containsKey(name)) {
             return priceMap.get(name);
         } else {
             return null;
         }
     }
-    
+
     public void setSymbol(SymbolName name, Price ask, Price bid) {
-        this.priceMap.put(name, new Symbol(project, name, ask, bid));
+        this.priceMap.put(name.toString(), new Symbol(project, name, ask, bid));
     }
 
     abstract protected void init();
@@ -102,7 +114,7 @@ abstract public class Trade {
         return status;
     }
 
-    public void getSellLock(SymbolName name) {
+    public void getSellLock(String name) {
         while (true) {
             if (this.sellOrderLock.putIfAbsent(name, new Boolean(false))) {
             }
@@ -112,7 +124,7 @@ abstract public class Trade {
         }
     }
 
-    public void unlockSellLock(SymbolName name) {
+    public void unlockSellLock(String name) {
         while (true) {
             if (this.sellOrderLock.replace(name, new Boolean(true), new Boolean(false))) {
                 break;
@@ -168,7 +180,7 @@ abstract public class Trade {
         return status;
     }
 
-    public void getBuyLock(SymbolName name) {
+    public void getBuyLock(String name) {
         while (true) {
             if (this.buyOrderLock.putIfAbsent(name, new Boolean(false))) {
             }
@@ -178,7 +190,7 @@ abstract public class Trade {
         }
     }
 
-    public void unlockBuyLock(SymbolName name) {
+    public void unlockBuyLock(String name) {
         while (true) {
             if (this.buyOrderLock.replace(name, new Boolean(true), new Boolean(false))) {
                 break;

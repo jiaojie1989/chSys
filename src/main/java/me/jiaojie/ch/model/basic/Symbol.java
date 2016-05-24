@@ -23,17 +23,30 @@ public class Symbol {
     protected Price bid; // ch buy price
     protected Price ask; // ch sell price
     protected SymbolName symbol;
-    // add timestamp
+    protected long timestamp;
+
+    public Symbol(Project project, SymbolName symbol, Price ask, Price bid, long timestmap) {
+        this.project = project;
+        this.symbol = symbol;
+        this.ask = ask;
+        this.bid = bid;
+        this.timestamp = timestmap;
+    }
 
     public Symbol(Project project, SymbolName symbol, Price ask, Price bid) {
         this.project = project;
         this.symbol = symbol;
         this.ask = ask;
         this.bid = bid;
+        this.timestamp = System.currentTimeMillis() / 1000;
+    }
+    
+    public long getTimestamp() {
+        return this.timestamp;
     }
 
-    public SymbolName getSymbolName() {
-        return this.symbol;
+    public String getSymbolName() {
+        return this.symbol.toString();
     }
 
     public Price getBidPrice() {

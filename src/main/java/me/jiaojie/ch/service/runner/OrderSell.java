@@ -16,7 +16,7 @@ import me.jiaojie.ch.model.basic.Symbol;
  *
  * @author jiaojie <jiaojie@staff.sina.com>
  */
-public class BuyOrder implements Runnable {
+public class OrderSell implements Runnable {
 
     protected Symbol symbol;
 

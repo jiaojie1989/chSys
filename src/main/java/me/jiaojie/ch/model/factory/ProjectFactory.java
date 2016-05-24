@@ -19,11 +19,11 @@ import me.jiaojie.ch.model.basic.*;
  */
 public class ProjectFactory {
 
-    protected static HashMap<String, Project> projectHashMap;
+    protected static HashMap<String, Project> projectHashMap = new HashMap<String, Project>();
 
     public static Project getProject(String projectName) {
         if (projectHashMap.containsKey(projectName)) {
-            
+
         } else {
             projectHashMap.put(projectName, new Project(projectName));
         }
