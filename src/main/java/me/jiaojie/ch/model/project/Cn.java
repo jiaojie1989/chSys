@@ -27,7 +27,6 @@ public class Cn extends Trade {
 
     protected static Cn instance;
     protected int initNum;
-    private static final Logger LOG = Logger.getLogger(Cn.class.getName());
 
     protected Cn() {
         this.project = new Project("cn");
