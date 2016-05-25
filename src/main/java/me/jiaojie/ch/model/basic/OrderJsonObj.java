@@ -21,7 +21,7 @@ public class OrderJsonObj {
     private String type;
     private String sid;
     private int amount;
-    private long timestamp;
+    private long timestamp = 0;
     private double price;
     private int wait;
 
@@ -99,6 +99,10 @@ public class OrderJsonObj {
      * @return the timestamp
      */
     public long getTimestamp() {
+        if (0 == timestamp) {
+        } else {
+            setTimestamp(System.currentTimeMillis() / 1000);
+        }
         return timestamp;
     }
 

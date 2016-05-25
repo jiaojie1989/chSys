@@ -10,6 +10,9 @@
  */
 package me.jiaojie.ch.model.basic;
 
+import java.util.Objects;
+import me.jiaojie.ch.service.MyLogger;
+
 /**
  *
  * @author jiaojie <jiaojie@staff.sina.com>
@@ -86,5 +89,25 @@ public class OrderDetail {
      */
     public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
+    }
+
+    @Override
+    public int hashCode() {
+        return this.orderId.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final OrderDetail other = (OrderDetail) obj;
+        if (!Objects.equals(this.orderId, other.getOrderId())) {
+            return false;
+        }
+        return true;
     }
 }

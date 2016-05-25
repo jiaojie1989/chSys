@@ -11,6 +11,7 @@
 package me.jiaojie.ch.model.basic;
 
 import java.util.Objects;
+import me.jiaojie.ch.service.MyLogger;
 
 /**
  *
@@ -38,7 +39,7 @@ public class Order {
         this.timestamp = System.currentTimeMillis() / 1000;
         this.canDeal = this.canDeal(type, price);
     }
-    
+
     public Order(Project project, OrderDetail detail, BuySellType type, Symbol symbol, Price price, long timestamp) {
         this.project = project;
         this.detail = detail;
@@ -97,7 +98,7 @@ public class Order {
             return false;
         }
         final Order other = (Order) obj;
-        return Objects.equals(this.getDetail(), other.getDetail());
+        return Objects.equals(this.getDetail().getOrderId(), other.getDetail().getOrderId());
     }
 
     /**
