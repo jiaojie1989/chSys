@@ -23,6 +23,7 @@ public class OrderJsonObj {
     private int amount;
     private long timestamp;
     private double price;
+    private int wait;
 
     /**
      * @return the orderId
@@ -120,5 +121,19 @@ public class OrderJsonObj {
      */
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    /**
+     * @return the wait
+     */
+    public int getWait() {
+        return wait;
+    }
+
+    /**
+     * @param wait the wait to set
+     */
+    public void setWait(int wait) {
+        this.wait = wait;
     }
 }
