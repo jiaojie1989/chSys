@@ -12,6 +12,9 @@ package me.jiaojie.ch.service.runner;
 
 import me.jiaojie.ch.model.basic.Symbol;
 import me.jiaojie.ch.model.basic.Project;
+import me.jiaojie.ch.model.factory.ProjectFactory;
+import me.jiaojie.ch.model.project.Cn;
+import java.util.TreeSet;
 
 /**
  *
@@ -28,7 +31,14 @@ public class ChAsk implements Runnable {
         this.project = project;
     }
 
+    public ChAsk(Symbol symbol, String project) {
+        this.symbol = symbol;
+        this.project = ProjectFactory.getProject(project);
+    }
+
     @Override
     public void run() {
+        Cn cn = Cn.getInstance();
+        TreeSet succSet = cn.getSuccBuyTrade(symbol);
     }
 }

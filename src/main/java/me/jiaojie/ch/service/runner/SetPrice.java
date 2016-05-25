@@ -16,6 +16,7 @@ import me.jiaojie.ch.model.basic.Symbol;
 import me.jiaojie.ch.model.basic.SymbolName;
 import me.jiaojie.ch.model.factory.ProjectFactory;
 import me.jiaojie.ch.model.project.Cn;
+import me.jiaojie.ch.service.Threads;
 
 /**
  *
@@ -37,5 +38,7 @@ public class SetPrice implements Runnable {
     public void run() {
         Cn cn = Cn.getInstance();
         cn.setSymbolPrice(this.symbol);
+        Threads.getPriceScanner().execute(new ChAsk(symbol, "cn"));
+        Threads.getPriceScanner().execute(new ChBid(symbol, "cn"));
     }
 }
