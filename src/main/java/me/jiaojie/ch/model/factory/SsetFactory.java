@@ -18,6 +18,7 @@ import me.jiaojie.ch.model.basic.Symbol;
 import me.jiaojie.ch.model.basic.Project;
 import me.jiaojie.ch.model.basic.BuySellType;
 import me.jiaojie.ch.model.basic.OrderDetail;
+import me.jiaojie.ch.model.basic.SymbolName;
 import me.jiaojie.ch.model.factory.BuySellTypeFactory;
 
 /**
@@ -51,5 +52,9 @@ public class SsetFactory {
 
     public static OrderDetail generateOrderDetail() {
         return new OrderDetail();
+    }
+    
+    public static Symbol getEmptySymbol(String project, String name) {
+        return new Symbol(ProjectFactory.getProject(project), new SymbolName(name), new Price(99999999999.9), new Price(-1.1));
     }
 }
