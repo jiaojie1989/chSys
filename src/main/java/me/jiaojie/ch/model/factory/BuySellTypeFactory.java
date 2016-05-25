@@ -12,6 +12,7 @@ package me.jiaojie.ch.model.factory;
 
 import java.util.HashMap;
 import me.jiaojie.ch.model.basic.BuySellType;
+import me.jiaojie.ch.service.MyLogger;
 
 /**
  *
@@ -19,9 +20,15 @@ import me.jiaojie.ch.model.basic.BuySellType;
  */
 public class BuySellTypeFactory {
 
-    protected static HashMap<String, BuySellType> typeHashMap;
+    protected static HashMap<String, BuySellType> typeHashMap = new HashMap<String, BuySellType>();
 
     public static BuySellType getType(String type) {
+        if (type.equals("buy")) {
+            type = "1";
+        } else if (type.equals("sell")) {
+            type = "-1";
+        }
+        MyLogger.info(type);
         if (typeHashMap.containsKey(type)) {
 
         } else {
