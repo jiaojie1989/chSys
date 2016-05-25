@@ -35,9 +35,9 @@ public class SsetFactory {
         BuySellType type = BuySellTypeFactory.getType(iType);
         Price price;
         if ("sell" == iType) {
-            price = symbol.getAskPrice();
+            price = symbol.getAsk();
         } else {
-            price = symbol.getBidPrice();
+            price = symbol.getBid();
         }
         return new Order(project, detail, type, symbol, price);
     }
@@ -45,7 +45,7 @@ public class SsetFactory {
     public static Order getEmptyOrder(Project project, Symbol symbol) {
         OrderDetail detail = null;
         BuySellType type = BuySellTypeFactory.getType("buy");
-        Price price = symbol.getBidPrice();
+        Price price = symbol.getBid();
         return new Order(project, detail, type, symbol, price);
     }
 

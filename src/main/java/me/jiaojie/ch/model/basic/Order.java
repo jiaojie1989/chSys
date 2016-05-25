@@ -26,6 +26,8 @@ public class Order {
     private Price price;
     private boolean deal = false;
     private boolean canDeal = false;
+    private long timestamp;
+    final private static long timeDiff = 180L; // 3 min
 
     public Order(Project project, OrderDetail detail, BuySellType type, Symbol symbol, Price price) {
         this.project = project;
@@ -33,7 +35,26 @@ public class Order {
         this.type = type;
         this.symbol = symbol;
         this.price = price;
-        this.canDeal = this.symbol.canDeal(type, price);
+        this.timestamp = System.currentTimeMillis() / 1000;
+        this.canDeal = this.canDeal(type, price);
+    }
+    
+    public Order(Project project, OrderDetail detail, BuySellType type, Symbol symbol, Price price, long timestamp) {
+        this.project = project;
+        this.detail = detail;
+        this.type = type;
+        this.symbol = symbol;
+        this.price = price;
+        this.timestamp = timestamp;
+        this.canDeal = this.canDeal(type, price);
+    }
+
+    protected boolean canDeal(BuySellType type, Price price) {
+        if (this.timestamp > this.symbol.getTimestamp() + timeDiff) {
+            return false;
+        } else {
+            return this.symbol.canDeal(type, price);
+        }
     }
 
     public Symbol getSymbol() {

@@ -40,7 +40,7 @@ public class Symbol {
         this.bid = bid;
         this.timestamp = System.currentTimeMillis() / 1000;
     }
-    
+
     public long getTimestamp() {
         return this.timestamp;
     }
@@ -49,16 +49,12 @@ public class Symbol {
         return this.getSymbol().toString();
     }
 
-    public Price getBidPrice() {
-        return this.getBid();
-    }
-
-    public Price getAskPrice() {
-        return this.getAsk();
-    }
-
     public boolean canDeal(BuySellType queryType, Price queryPrice) {
-        return true;
+        if (queryType.isBuyType()) {
+            return this.canBuyOrderDeal(queryPrice);
+        } else {
+            return this.canSellOrderDeal(queryPrice);
+        }
     }
 
     protected boolean canBuyOrderDeal(Price queryPrice) {
