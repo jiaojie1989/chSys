@@ -19,47 +19,68 @@ import org.apache.commons.codec.digest.DigestUtils;
  */
 public class Symbol {
 
-    protected Project project;
-    protected Price bid; // ch buy price
-    protected Price ask; // ch sell price
-    protected SymbolName symbol;
-    // add timestamp
+    private Project project;
+    private Price bid; // ch buy price
+    private Price ask; // ch sell price
+    private SymbolName symbol;
+    private long timestamp;
+
+    public Symbol(Project project, SymbolName symbol, Price ask, Price bid, long timestmap) {
+        this.project = project;
+        this.symbol = symbol;
+        this.ask = ask;
+        this.bid = bid;
+        this.timestamp = timestmap;
+    }
 
     public Symbol(Project project, SymbolName symbol, Price ask, Price bid) {
         this.project = project;
         this.symbol = symbol;
         this.ask = ask;
         this.bid = bid;
+        this.timestamp = System.currentTimeMillis() / 1000;
+    }
+
+    public long getTimestamp() {
+        return this.timestamp;
+    }
+
+    public String getSymbolName() {
+        return this.getSymbol().toString();
     }
 
     public boolean canDeal(BuySellType queryType, Price queryPrice) {
-        return true;
+        if (queryType.isBuyType()) {
+            return this.canBuyOrderDeal(queryPrice);
+        } else {
+            return this.canSellOrderDeal(queryPrice);
+        }
     }
 
     protected boolean canBuyOrderDeal(Price queryPrice) {
-        return this.bid.isNoMoreThan(queryPrice);
+        return this.getBid().isNoMoreThan(queryPrice);
     }
 
     protected boolean canSellOrderDeal(Price queryPrice) {
-        return this.ask.isNoLessThan(queryPrice);
+        return this.getAsk().isNoLessThan(queryPrice);
     }
 
     public Price getDealPrice(BuySellType queryType) {
         if (queryType.isBuyType()) {
-            return this.bid;
+            return this.getBid();
         } else {
-            return this.ask;
+            return this.getAsk();
         }
     }
 
     @Override
     public String toString() {
-        return "" + this.project + "," + this.symbol;
+        return "" + this.getProject() + "," + this.getSymbol();
     }
 
     @Override
     public int hashCode() {
-        return DigestUtils.md5Hex("" + this.project + this.symbol).hashCode();
+        return DigestUtils.md5Hex("" + this.getProject() + this.getSymbol()).hashCode();
     }
 
     @Override
@@ -78,5 +99,68 @@ public class Symbol {
             return false;
         }
         return true;
+    }
+
+    /**
+     * @return the project
+     */
+    public Project getProject() {
+        return project;
+    }
+
+    /**
+     * @param project the project to set
+     */
+    public void setProject(Project project) {
+        this.project = project;
+    }
+
+    /**
+     * @return the bid
+     */
+    public Price getBid() {
+        return bid;
+    }
+
+    /**
+     * @param bid the bid to set
+     */
+    public void setBid(Price bid) {
+        this.bid = bid;
+    }
+
+    /**
+     * @return the ask
+     */
+    public Price getAsk() {
+        return ask;
+    }
+
+    /**
+     * @param ask the ask to set
+     */
+    public void setAsk(Price ask) {
+        this.ask = ask;
+    }
+
+    /**
+     * @return the symbol
+     */
+    public SymbolName getSymbol() {
+        return symbol;
+    }
+
+    /**
+     * @param symbol the symbol to set
+     */
+    public void setSymbol(SymbolName symbol) {
+        this.symbol = symbol;
+    }
+
+    /**
+     * @param timestamp the timestamp to set
+     */
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
     }
 }

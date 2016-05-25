@@ -18,7 +18,7 @@ import java.util.Objects;
  */
 public class SymbolName {
 
-    protected String name;
+    private String name;
 
     public SymbolName(String name) {
         this.name = name;
@@ -26,12 +26,12 @@ public class SymbolName {
 
     @Override
     public String toString() {
-        return this.name;
+        return this.getName();
     }
 
     @Override
     public int hashCode() {
-        return this.name.hashCode();
+        return this.getName().hashCode();
     }
 
     @Override
@@ -43,6 +43,20 @@ public class SymbolName {
             return false;
         }
         final SymbolName other = (SymbolName) obj;
-        return Objects.equals(this.name, other.name);
+        return Objects.equals(this.getName(), other.getName());
+    }
+
+    /**
+     * @return the name
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
     }
 }

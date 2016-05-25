@@ -16,7 +16,7 @@ package me.jiaojie.ch.model.basic;
  */
 public class Price {
 
-    protected double price;
+    private double price;
 
     public Price(double price) {
         this.price = price;
@@ -31,15 +31,22 @@ public class Price {
     }
 
     public boolean isNoMoreThan(Price queryPrice) {
-        return queryPrice.getPrice() <= this.price;
+        return queryPrice.getPrice() <= this.getPrice();
     }
 
     public boolean isNoLessThan(Price queryPrice) {
-        return queryPrice.getPrice() >= this.price;
+        return queryPrice.getPrice() >= this.getPrice();
     }
 
     @Override
     public String toString() {
-        return String.valueOf(this.price);
+        return String.valueOf(this.getPrice());
+    }
+
+    /**
+     * @param price the price to set
+     */
+    public void setPrice(double price) {
+        this.price = price;
     }
 }

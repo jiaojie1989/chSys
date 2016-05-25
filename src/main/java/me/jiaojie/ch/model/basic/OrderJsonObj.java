@@ -3,37 +3,27 @@
  *  
  *  
  * 
- * This script is firstly created at 2016-05-20.
+ * This script is firstly created at 2016-05-25.
  * 
  * To see more infomation,
  *    visit our official website http://jiaoyi.sina.com.cn/.
  */
 package me.jiaojie.ch.model.basic;
 
-import java.util.Objects;
-import me.jiaojie.ch.service.MyLogger;
-
 /**
  *
  * @author jiaojie <jiaojie@staff.sina.com>
  */
-public class OrderDetail {
+public class OrderJsonObj {
 
     private String orderId;
+    private String symbol;
+    private String type;
     private String sid;
     private int amount;
-    private long timestamp;
-
-    public OrderDetail(String orderId, String sid, int amount, long timestamp) {
-        this.orderId = orderId;
-        this.sid = sid;
-        this.amount = amount;
-        this.timestamp = timestamp;
-    }
-
-    public OrderDetail() {
-
-    }
+    private long timestamp = 0;
+    private double price;
+    private int wait;
 
     /**
      * @return the orderId
@@ -47,6 +37,34 @@ public class OrderDetail {
      */
     public void setOrderId(String orderId) {
         this.orderId = orderId;
+    }
+
+    /**
+     * @return the symbol
+     */
+    public String getSymbol() {
+        return symbol;
+    }
+
+    /**
+     * @param symbol the symbol to set
+     */
+    public void setSymbol(String symbol) {
+        this.symbol = symbol;
+    }
+
+    /**
+     * @return the type
+     */
+    public String getType() {
+        return type;
+    }
+
+    /**
+     * @param type the type to set
+     */
+    public void setType(String type) {
+        this.type = type;
     }
 
     /**
@@ -81,6 +99,10 @@ public class OrderDetail {
      * @return the timestamp
      */
     public long getTimestamp() {
+        if (0 == timestamp) {
+        } else {
+            setTimestamp(System.currentTimeMillis() / 1000);
+        }
         return timestamp;
     }
 
@@ -91,23 +113,31 @@ public class OrderDetail {
         this.timestamp = timestamp;
     }
 
-    @Override
-    public int hashCode() {
-        return this.orderId.hashCode();
+    /**
+     * @return the price
+     */
+    public double getPrice() {
+        return price;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final OrderDetail other = (OrderDetail) obj;
-        if (!Objects.equals(this.orderId, other.getOrderId())) {
-            return false;
-        }
-        return true;
+    /**
+     * @param price the price to set
+     */
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    /**
+     * @return the wait
+     */
+    public int getWait() {
+        return wait;
+    }
+
+    /**
+     * @param wait the wait to set
+     */
+    public void setWait(int wait) {
+        this.wait = wait;
     }
 }
