@@ -47,7 +47,7 @@ abstract public class Trade {
             return null;
         }
     }
-    
+
     public Symbol getSymbol(String name) {
         if (priceMap.containsKey(name)) {
             return priceMap.get(name);
@@ -71,12 +71,12 @@ abstract public class Trade {
             this.sellOrderMap.put(symbol.getSymbolName(), SsetFactory.getEmptySet(new SellComparator()));
         }
         if (this.sellOrderMap.get(symbol.getSymbolName()).size() == 0) {
-            return null;
+            return new TreeSet<Order>();
         } else {
             SortedSet<Order> temp;
             temp = this.sellOrderMap.get(symbol.getSymbolName()).tailSet(SsetFactory.getEmptyOrder(this.project, symbol, "sell"));
             if (temp.size() == 0) {
-                return null;
+                return new TreeSet<Order>();
             } else {
                 this.getSellLock(symbol.getSymbolName());
                 TreeSet<Order> dealSet = new TreeSet<Order>();
@@ -114,7 +114,7 @@ abstract public class Trade {
         return status;
     }
 
-    public void getSellLock(String name) {
+    protected void getSellLock(String name) {
         while (true) {
             if (this.sellOrderLock.putIfAbsent(name, new Boolean(false))) {
             }
@@ -124,7 +124,7 @@ abstract public class Trade {
         }
     }
 
-    public void unlockSellLock(String name) {
+    protected void unlockSellLock(String name) {
         while (true) {
             if (this.sellOrderLock.replace(name, new Boolean(true), new Boolean(false))) {
                 break;
@@ -137,12 +137,12 @@ abstract public class Trade {
             this.buyOrderMap.put(symbol.getSymbolName(), SsetFactory.getEmptySet(new BuyComparator()));
         }
         if (this.buyOrderMap.get(symbol.getSymbolName()).size() == 0) {
-            return null;
+            return new TreeSet<Order>();
         } else {
             SortedSet<Order> temp;
             temp = this.buyOrderMap.get(symbol.getSymbolName()).tailSet(SsetFactory.getEmptyOrder(this.project, symbol, "buy"));
             if (temp.size() == 0) {
-                return null;
+                return new TreeSet<Order>();
             } else {
                 this.getBuyLock(symbol.getSymbolName());
                 TreeSet<Order> dealSet = new TreeSet<Order>();
@@ -180,7 +180,7 @@ abstract public class Trade {
         return status;
     }
 
-    public void getBuyLock(String name) {
+    protected void getBuyLock(String name) {
         while (true) {
             if (this.buyOrderLock.putIfAbsent(name, new Boolean(false))) {
             }
@@ -190,7 +190,7 @@ abstract public class Trade {
         }
     }
 
-    public void unlockBuyLock(String name) {
+    protected void unlockBuyLock(String name) {
         while (true) {
             if (this.buyOrderLock.replace(name, new Boolean(true), new Boolean(false))) {
                 break;
