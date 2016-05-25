@@ -22,6 +22,7 @@ import java.util.Iterator;
 import me.jiaojie.ch.model.factory.SsetFactory;
 import me.jiaojie.ch.model.op.BuyComparator;
 import me.jiaojie.ch.model.op.SellComparator;
+import me.jiaojie.ch.service.MyLogger;
 
 /**
  *
@@ -44,7 +45,7 @@ abstract public class Trade {
         if (priceMap.containsKey(name.toString())) {
             return priceMap.get(name.toString());
         } else {
-            return null;
+            return SsetFactory.getEmptySymbol(this.project.getName(), name.getName());
         }
     }
 
@@ -52,7 +53,7 @@ abstract public class Trade {
         if (priceMap.containsKey(name)) {
             return priceMap.get(name);
         } else {
-            return null;
+            return SsetFactory.getEmptySymbol(this.project.getName(), name);
         }
     }
 
@@ -96,6 +97,27 @@ abstract public class Trade {
         }
     }
 
+    public boolean mkSellOrder(Order order) {
+        Symbol symbol = order.getSymbol();
+        boolean status = false;
+        this.getSellLock(symbol.getSymbolName());
+        if (!this.sellOrderMap.contains(symbol.getSymbolName())) {
+            this.sellOrderMap.put(symbol.getSymbolName(), SsetFactory.getEmptySet(new SellComparator()));
+        }
+        if (this.sellOrderMap.get(symbol.getSymbolName()).size() == 0) {
+        } else {
+            if (this.sellOrderMap.get(symbol.getSymbolName()).contains(order)) {
+                TreeSet<Order> temp = SsetFactory.getEmptySet(new SellComparator());
+                temp.addAll(this.sellOrderMap.get(symbol.getSymbolName()));
+                temp.add(order);
+                this.sellOrderMap.put(symbol.getSymbolName(), temp);
+                status = true;
+            }
+        }
+        this.unlockSellLock(symbol.getSymbolName());
+        return status;
+    }
+
     public boolean cancelSellTrade(Order order) {
         Symbol symbol = order.getSymbol();
         boolean status = false;
@@ -115,9 +137,8 @@ abstract public class Trade {
     }
 
     protected void getSellLock(String name) {
+        this.sellOrderLock.putIfAbsent(name, new Boolean(false));
         while (true) {
-            if (this.sellOrderLock.putIfAbsent(name, new Boolean(false))) {
-            }
             if (this.sellOrderLock.replace(name, new Boolean(false), new Boolean(true))) {
                 break;
             }
@@ -162,6 +183,24 @@ abstract public class Trade {
         }
     }
 
+    public boolean mkBuyOrder(Order order) {
+        Symbol symbol = order.getSymbol();
+        boolean status = false;
+        this.getBuyLock(symbol.getSymbolName());
+        if (!this.buyOrderMap.containsKey(symbol.getSymbolName())) {
+            this.buyOrderMap.put(symbol.getSymbolName(), SsetFactory.getEmptySet(new BuyComparator()));
+        }
+        if (!this.buyOrderMap.get(symbol.getSymbolName()).contains(order)) {
+            TreeSet<Order> temp = SsetFactory.getEmptySet(new BuyComparator());
+            temp.addAll(this.buyOrderMap.get(symbol.getSymbolName()));
+            temp.add(order);
+            this.buyOrderMap.put(symbol.getSymbolName(), temp);
+            status = true;
+        }
+        this.unlockBuyLock(symbol.getSymbolName());
+        return status;
+    }
+
     public boolean cancelBuyTrade(Order order) {
         Symbol symbol = order.getSymbol();
         boolean status = false;
@@ -181,18 +220,20 @@ abstract public class Trade {
     }
 
     protected void getBuyLock(String name) {
+        this.buyOrderLock.putIfAbsent(name, new Boolean(false));
         while (true) {
-            if (this.buyOrderLock.putIfAbsent(name, new Boolean(false))) {
-            }
             if (this.buyOrderLock.replace(name, new Boolean(false), new Boolean(true))) {
+//                MyLogger.debug("Get Lock - " + name);
                 break;
             }
+//            MyLogger.debug("Try Get Lock Fail - " + name);
         }
     }
 
     protected void unlockBuyLock(String name) {
         while (true) {
             if (this.buyOrderLock.replace(name, new Boolean(true), new Boolean(false))) {
+                MyLogger.debug("Release Lock - " + name);
                 break;
             }
         }
