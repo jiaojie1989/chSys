@@ -40,7 +40,9 @@ public class Cn extends Trade {
         this.sellOrderLock = new ConcurrentHashMap<String, Boolean>(this.initNum);
         this.buyOrderMap = new ConcurrentHashMap<String, TreeSet<Order>>(this.initNum);
         this.sellOrderMap = new ConcurrentHashMap<String, TreeSet<Order>>(this.initNum);
-        this.priceMap= new ConcurrentHashMap<String, Symbol>(this.initNum);
+        this.priceMap = new ConcurrentHashMap<String, Symbol>(this.initNum);
+        this.buyOrderLock = new ConcurrentHashMap<String, Boolean>(this.initNum);
+        this.sellOrderLock = new ConcurrentHashMap<String, Boolean>(this.initNum);
     }
 
     public static Cn getInstance() {
