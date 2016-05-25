@@ -21,6 +21,9 @@ public class SellComparator implements Comparator<Order> {
 
     @Override
     public int compare(Order A, Order B) {
+        if (A.getDetail().getOrderId().equals(B.getDetail().getOrderId())) {
+            return 0;
+        }
         if (A.getOrderPrice().isNoLessThan(B.getOrderPrice())) {
             return 1;
         } else {
