@@ -23,7 +23,7 @@ To see more infomation,
     </loggers>  
 </configuration>  -->
 
-<configuration status="OFF">    
+<configuration status="DEBUG">    
     <appenders>    
         <Console name="Console" target="SYSTEM_OUT">    
             <ThresholdFilter level="trace" onMatch="ACCEPT" onMismatch="DENY"/>    
@@ -41,7 +41,7 @@ To see more infomation,
     <loggers>    
         <root level="trace">    
             <appender-ref ref="RollingFile"/>    
-            <!--<appender-ref ref="Console"/>-->    
+            <appender-ref ref="Console"/>    
         </root>    
     </loggers>    
 </configuration>   
