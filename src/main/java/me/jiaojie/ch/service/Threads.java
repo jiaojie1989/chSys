@@ -34,7 +34,7 @@ public class Threads {
             synchronized (Threads.class) {
                 HealthReportor = Executors.newScheduledThreadPool(1);
                 PriceHandler = Executors.newFixedThreadPool(4);
-                PriceScanner = Executors.newFixedThreadPool(4);
+                PriceScanner = Executors.newFixedThreadPool(8);
                 OrderHandler = Executors.newFixedThreadPool(2);
                 Inited = true;
             }
