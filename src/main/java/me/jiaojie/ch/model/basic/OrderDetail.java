@@ -16,10 +16,10 @@ package me.jiaojie.ch.model.basic;
  */
 public class OrderDetail {
 
-    protected String orderId;
-    protected String sid;
-    protected int amount;
-    protected long timestamp;
+    private String orderId;
+    private String sid;
+    private int amount;
+    private long timestamp;
 
     public OrderDetail(String orderId, String sid, int amount, long timestamp) {
         this.orderId = orderId;
@@ -30,5 +30,61 @@ public class OrderDetail {
 
     public OrderDetail() {
 
+    }
+
+    /**
+     * @return the orderId
+     */
+    public String getOrderId() {
+        return orderId;
+    }
+
+    /**
+     * @param orderId the orderId to set
+     */
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
+    }
+
+    /**
+     * @return the sid
+     */
+    public String getSid() {
+        return sid;
+    }
+
+    /**
+     * @param sid the sid to set
+     */
+    public void setSid(String sid) {
+        this.sid = sid;
+    }
+
+    /**
+     * @return the amount
+     */
+    public int getAmount() {
+        return amount;
+    }
+
+    /**
+     * @param amount the amount to set
+     */
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
+
+    /**
+     * @return the timestamp
+     */
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    /**
+     * @param timestamp the timestamp to set
+     */
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
     }
 }

@@ -30,7 +30,7 @@ public class SetPrice implements Runnable {
     public SetPrice(PriceJsonObj priceObj, SymbolName name) {
         this.priceObj = priceObj;
         this.name = name;
-        this.symbol = new Symbol(ProjectFactory.getProject("cn"), this.name, new Price(priceObj.ask), new Price(priceObj.bid));
+        this.symbol = new Symbol(ProjectFactory.getProject("cn"), this.name, new Price(priceObj.getAsk()), new Price(priceObj.getBid()));
     }
 
     @Override

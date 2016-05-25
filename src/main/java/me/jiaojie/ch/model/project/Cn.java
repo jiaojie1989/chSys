@@ -17,6 +17,7 @@ import me.jiaojie.ch.model.basic.SymbolName;
 import me.jiaojie.ch.model.basic.Price;
 import me.jiaojie.ch.model.basic.Project;
 import java.util.TreeSet;
+import java.util.logging.Logger;
 
 /**
  *
@@ -26,6 +27,7 @@ public class Cn extends Trade {
 
     protected static Cn instance;
     protected int initNum;
+    private static final Logger LOG = Logger.getLogger(Cn.class.getName());
 
     protected Cn() {
         this.project = new Project("cn");

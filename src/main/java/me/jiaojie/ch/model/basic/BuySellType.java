@@ -10,13 +10,15 @@
  */
 package me.jiaojie.ch.model.basic;
 
+import java.util.logging.Logger;
+
 /**
  *
  * @author jiaojie <jiaojie@staff.sina.com>
  */
 public class BuySellType {
 
-    protected int type;
+    private int type;
 
     public BuySellType(int type) throws RuntimeException {
         if (type != 1 && type != -1) {
@@ -26,21 +28,21 @@ public class BuySellType {
     }
 
     public boolean isBuyType() {
-        return 1 == this.type;
+        return 1 == this.getType();
     }
 
     public boolean isSellType() {
-        return -1 == this.type;
+        return -1 == this.getType();
     }
 
     @Override
     public String toString() {
-        return 1 == type ? "buy" : "sell";
+        return 1 == getType() ? "buy" : "sell";
     }
 
     @Override
     public int hashCode() {
-        return this.type;
+        return this.getType();
     }
 
     @Override
@@ -52,6 +54,20 @@ public class BuySellType {
             return false;
         }
         final BuySellType other = (BuySellType) obj;
-        return this.type == other.type;
+        return this.getType() == other.getType();
+    }
+
+    /**
+     * @return the type
+     */
+    public int getType() {
+        return type;
+    }
+
+    /**
+     * @param type the type to set
+     */
+    public void setType(int type) {
+        this.type = type;
     }
 }

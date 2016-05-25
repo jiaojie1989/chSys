@@ -70,7 +70,7 @@ public class CnController {
             return output;
         }
     }
-    
+
     @RequestMapping(value = "/cn/price/{symbolName}", method = {RequestMethod.GET}, produces = "application/json;charset=utf-8")
     @ResponseBody
     public String getPrice(@PathVariable String symbolName) {
@@ -84,7 +84,7 @@ public class CnController {
         return "ok";
     }
 
-    @RequestMapping(value = "/cn/order", method = RequestMethod.GET)
+    @RequestMapping(value = "/cn/order/{orderId}", method = RequestMethod.GET)
     public String getOrder() {
         return "ok";
     }
