@@ -25,12 +25,18 @@ import java.util.Map;
 import com.alibaba.fastjson.TypeReference;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiConsumer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import me.jiaojie.ch.model.basic.Symbol;
 import me.jiaojie.ch.model.basic.PriceJsonObj;
+import me.jiaojie.ch.model.basic.OrderJsonObj;
 import me.jiaojie.ch.model.basic.SymbolName;
 import me.jiaojie.ch.model.project.Cn;
+import me.jiaojie.ch.service.MyLogger;
 import me.jiaojie.ch.service.Threads;
+import me.jiaojie.ch.service.runner.OrderBuy;
+import me.jiaojie.ch.service.runner.OrderSell;
 import me.jiaojie.ch.service.runner.SetPrice;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -79,17 +85,43 @@ public class CnController {
         return output;
     }
 
-    @RequestMapping(value = "/cn/order", method = RequestMethod.POST)
+    @RequestMapping(value = "/cn/order", method = {RequestMethod.POST, RequestMethod.PUT}, produces = "application/json;charset=utf-8")
+    @ResponseBody
     public String mkOrder() {
-        return "ok";
+        Threads.Init();
+        String output = "";
+        InputStream is;
+        try {
+            is = request.getInputStream();
+            String contentStr = IOUtils.toString(is, "utf-8");
+            Map<String, OrderJsonObj> map = JSON.parseObject(contentStr, new TypeReference<Map<String, OrderJsonObj>>() {
+            });
+            map.forEach((String k, OrderJsonObj v) -> {
+//                Threads.getPriceHandler().execute(new SetPrice(v, new SymbolName(k)));
+                if ("buy".equals(v.getType())) {
+                    Threads.getOrderHandler().execute(new OrderBuy(v, "cn"));
+                } else if ("sell".equals(v.getType())) {
+                    Threads.getOrderHandler().execute(new OrderSell(v, "cn"));
+                }
+            });
+            output = JSON.toJSONString("ok");
+        } catch (IOException e) {
+            output = JSON.toJSONString(e);
+        } catch (Exception e) {
+            output = JSON.toJSONString(e);
+        } finally {
+            return output;
+        }
     }
 
     @RequestMapping(value = "/cn/order/{orderId}", method = RequestMethod.GET)
+    @ResponseBody
     public String getOrder() {
         return "ok";
     }
 
     @RequestMapping(value = "/cn/order", method = RequestMethod.DELETE)
+    @ResponseBody
     public String cancelOrder() {
         return "ok";
     }
