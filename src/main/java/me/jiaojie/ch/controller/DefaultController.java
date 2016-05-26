@@ -46,7 +46,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  */
 //@Controller
 @RestController
-public class SymbolController {
+public class DefaultController {
 
     @Autowired
     private HttpServletRequest request;

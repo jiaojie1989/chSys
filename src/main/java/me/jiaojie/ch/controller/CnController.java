@@ -40,6 +40,7 @@ import me.jiaojie.ch.service.runner.OrderSell;
 import me.jiaojie.ch.service.runner.SetPrice;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
+import lombok.Cleanup;
 
 /**
  *
@@ -56,9 +57,8 @@ public class CnController {
     public String updatePrice() {
         Threads.Init();
         String output = "";
-        InputStream is;
         try {
-            is = request.getInputStream();
+            @Cleanup InputStream is = request.getInputStream();
             String contentStr = IOUtils.toString(is, "utf-8");
             Map<String, PriceJsonObj> map = JSON.parseObject(contentStr, new TypeReference<Map<String, PriceJsonObj>>() {
             });
@@ -90,9 +90,8 @@ public class CnController {
     public String mkOrder() {
         Threads.Init();
         String output = "";
-        InputStream is;
         try {
-            is = request.getInputStream();
+            @Cleanup InputStream is = request.getInputStream();
             String contentStr = IOUtils.toString(is, "utf-8");
             Map<String, OrderJsonObj> map = JSON.parseObject(contentStr, new TypeReference<Map<String, OrderJsonObj>>() {
             });
