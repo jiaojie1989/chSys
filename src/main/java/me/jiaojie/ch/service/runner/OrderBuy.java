@@ -39,11 +39,16 @@ public class OrderBuy implements Runnable {
     public void run() {
         Symbol symbol = Cn.getInstance().getSymbol(orderObj.getSymbol());
         order = new Order(ProjectFactory.getProject(this.projectName), new OrderDetail(orderObj.getOrderId(), orderObj.getSid(), orderObj.getAmount(), orderObj.getTimestamp()), BuySellTypeFactory.getType("buy"), symbol, new Price(orderObj.getPrice()), this.orderObj.getTimestamp());
-        if (order.canDeal()) {
-            MyLogger.info("Succ Buy: " + order);
-        } else {
+        if (orderObj.getWait() == 1) {
             MyLogger.info("Queued Buy: " + order);
             Cn.getInstance().mkBuyOrder(order);
+        } else {
+            if (order.canDeal()) {
+                MyLogger.info("Succ Buy: " + order);
+            } else {
+                MyLogger.info("Queued Buy: " + order);
+                Cn.getInstance().mkBuyOrder(order);
+            }
         }
     }
 }
