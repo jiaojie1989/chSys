@@ -41,6 +41,11 @@ import me.jiaojie.ch.service.runner.SetPrice;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 import lombok.Cleanup;
+import me.jiaojie.ch.model.basic.Order;
+import me.jiaojie.ch.model.basic.OrderDetail;
+import me.jiaojie.ch.model.basic.Price;
+import me.jiaojie.ch.model.factory.BuySellTypeFactory;
+import me.jiaojie.ch.model.factory.ProjectFactory;
 
 /**
  *
@@ -58,7 +63,8 @@ public class CnController {
         Threads.Init();
         String output = "";
         try {
-            @Cleanup InputStream is = request.getInputStream();
+            @Cleanup
+            InputStream is = request.getInputStream();
             String contentStr = IOUtils.toString(is, "utf-8");
             Map<String, PriceJsonObj> map = JSON.parseObject(contentStr, new TypeReference<Map<String, PriceJsonObj>>() {
             });
@@ -91,7 +97,8 @@ public class CnController {
         Threads.Init();
         String output = "";
         try {
-            @Cleanup InputStream is = request.getInputStream();
+            @Cleanup
+            InputStream is = request.getInputStream();
             String contentStr = IOUtils.toString(is, "utf-8");
             Map<String, OrderJsonObj> map = JSON.parseObject(contentStr, new TypeReference<Map<String, OrderJsonObj>>() {
             });
@@ -122,6 +129,29 @@ public class CnController {
     @RequestMapping(value = "/cn/order", method = RequestMethod.DELETE)
     @ResponseBody
     public String cancelOrder() {
-        return "ok";
+        Threads.Init();
+        String output = "";
+        try {
+            @Cleanup
+            InputStream is = request.getInputStream();
+            String contentStr = IOUtils.toString(is, "utf-8");
+            OrderJsonObj orderObj = JSON.parseObject(contentStr, OrderJsonObj.class);
+            boolean ret = false;
+            Symbol symbol = Cn.getInstance().getSymbol(orderObj.getSymbol());
+            if ("buy".equals(orderObj.getType())) {
+                Order order = new Order(ProjectFactory.getProject("cn"), new OrderDetail(orderObj.getOrderId(), orderObj.getSid(), orderObj.getAmount(), orderObj.getTimestamp()), BuySellTypeFactory.getType("buy"), symbol, new Price(orderObj.getPrice()), orderObj.getTimestamp());
+                ret = Cn.getInstance().cancelBuyTrade(order);
+            } else if ("sell".equals(orderObj.getType())) {
+                Order order = new Order(ProjectFactory.getProject("cn"), new OrderDetail(orderObj.getOrderId(), orderObj.getSid(), orderObj.getAmount(), orderObj.getTimestamp()), BuySellTypeFactory.getType("sell"), symbol, new Price(orderObj.getPrice()), orderObj.getTimestamp());
+                ret = Cn.getInstance().cancelSellTrade(order);
+            }
+            output = JSON.toJSONString(ret);
+        } catch (IOException e) {
+            output = JSON.toJSONString(e);
+        } catch (Exception e) {
+            output = JSON.toJSONString(e);
+        } finally {
+            return output;
+        }
     }
 }
