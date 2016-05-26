@@ -26,6 +26,7 @@ public class Threads {
     private static ExecutorService PriceHandler;
     private static ExecutorService PriceScanner;
     private static ExecutorService OrderHandler;
+    private static ExecutorService OrderSuccHandler;
     private static ScheduledExecutorService SenderHandler;
 
     public static void Init() {
@@ -36,6 +37,7 @@ public class Threads {
                 PriceHandler = Executors.newFixedThreadPool(4);
                 PriceScanner = Executors.newFixedThreadPool(8);
                 OrderHandler = Executors.newFixedThreadPool(2);
+                OrderSuccHandler = Executors.newFixedThreadPool(1);
                 Inited = true;
             }
         }
@@ -56,5 +58,9 @@ public class Threads {
     public static ExecutorService getOrderHandler() {
         return OrderHandler;
     }
-    
+
+    public static ExecutorService getOrderSuccHandler() {
+        return OrderSuccHandler;
+    }
+
 }
