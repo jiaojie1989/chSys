@@ -23,6 +23,7 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 
 /**
  *
+ * @see git@github.com:BijanVan/Spring-Boot-Websocket-Sample.git 
  * @author jiaojie <jiaojie@staff.sina.com>
  */
 @Configuration
