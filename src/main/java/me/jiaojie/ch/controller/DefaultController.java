@@ -46,6 +46,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  */
 //@Controller
 @RestController
+@RequestMapping("/default")
 public class DefaultController {
 
     @Autowired
@@ -79,7 +80,7 @@ public class DefaultController {
     public String welcome() {
         return "Hello, World!";
     }
-    
+
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     public String getAll() {
 //        ConcurrentHashMap<String, Symbol> map = Cn.getInstance().getPriceMap();
