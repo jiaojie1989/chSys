@@ -10,10 +10,14 @@
  */
 package me.jiaojie.ch.service;
 
+import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import javax.websocket.Session;
+import me.jiaojie.ch.controller.CnWebsocket;
 
 /**
  *
@@ -28,6 +32,7 @@ public class Threads {
     private static ExecutorService OrderHandler;
     private static ExecutorService OrderSuccHandler;
     private static ScheduledExecutorService SenderHandler;
+    private static ScheduledThreadPoolExecutor TestHandler;
 
     public static void Init() {
         if (Inited) {
@@ -38,6 +43,26 @@ public class Threads {
                 PriceScanner = Executors.newFixedThreadPool(8);
                 OrderHandler = Executors.newFixedThreadPool(2);
                 OrderSuccHandler = Executors.newFixedThreadPool(1);
+                TestHandler = new ScheduledThreadPoolExecutor(1);
+                TestHandler.scheduleAtFixedRate(new Runnable() {
+                    @Override
+                    public void run() {
+                        Set<Session> sessionList = CnWebsocket.getOpenSessions();
+                        if (sessionList.size() > 0) {
+                            for (Session s : sessionList) {
+                                if (s.isOpen()) {
+                                    try {
+                                        s.getBasicRemote().sendText("Ack 当前总人数[" + sessionList.size() + "]");
+                                    } catch (Exception e) {
+                                        // do nothing
+                                    }
+                                }
+                            }
+                        } else {
+                            MyLogger.info("Session List Empty!");
+                        }
+                    }
+                }, 1, 3, TimeUnit.SECONDS);
                 Inited = true;
             }
         }
@@ -61,6 +86,10 @@ public class Threads {
 
     public static ExecutorService getOrderSuccHandler() {
         return OrderSuccHandler;
+    }
+
+    public static ScheduledThreadPoolExecutor getTestHandler() {
+        return TestHandler;
     }
 
 }
