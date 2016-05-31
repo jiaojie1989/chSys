@@ -16,6 +16,9 @@ import me.jiaojie.ch.model.basic.Symbol;
 import me.jiaojie.ch.model.basic.SymbolName;
 import me.jiaojie.ch.model.factory.ProjectFactory;
 import me.jiaojie.ch.model.project.Cn;
+import me.jiaojie.ch.model.project.Hk;
+import me.jiaojie.ch.model.project.Trade;
+import me.jiaojie.ch.model.project.Us;
 import me.jiaojie.ch.service.Threads;
 
 /**
@@ -24,21 +27,40 @@ import me.jiaojie.ch.service.Threads;
  */
 public class SetPrice implements Runnable {
 
-    protected PriceJsonObj priceObj;
-    protected Symbol symbol;
-    protected SymbolName name;
+    private final PriceJsonObj priceObj;
+    private final String projectName;
+    private final Symbol symbol;
+    private final SymbolName name;
 
-    public SetPrice(PriceJsonObj priceObj, SymbolName name) {
+    public SetPrice(PriceJsonObj priceObj, SymbolName name, String projectName) {
         this.priceObj = priceObj;
         this.name = name;
-        this.symbol = new Symbol(ProjectFactory.getProject("cn"), this.name, new Price(priceObj.getAsk()), new Price(priceObj.getBid()));
+        this.projectName = projectName;
+        this.symbol = new Symbol(ProjectFactory.getProject(this.projectName), this.name, new Price(priceObj.getAsk()), new Price(priceObj.getBid()));
     }
 
     @Override
     public void run() {
-        Cn cn = Cn.getInstance();
-        cn.setSymbolPrice(this.symbol);
-        Threads.getPriceScanner().execute(new ChAsk(symbol, "cn"));
-        Threads.getPriceScanner().execute(new ChBid(symbol, "cn"));
+        Trade project;
+        switch (projectName) {
+            case "cn":
+                project = Cn.getInstance();
+                break;
+            case "us":
+                project = Us.getInstance();
+                break;
+            case "hk":
+                project = Hk.getInstance();
+                break;
+            default:
+                project = null;
+                break;
+        }
+
+        if (null != project) {
+            project.setSymbolPrice(this.symbol);
+            Threads.getPriceScanner().execute(new ChAsk(symbol, projectName));
+            Threads.getPriceScanner().execute(new ChBid(symbol, projectName));
+        }
     }
 }
