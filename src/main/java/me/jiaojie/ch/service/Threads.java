@@ -10,6 +10,7 @@
  */
 package me.jiaojie.ch.service;
 
+import com.alibaba.fastjson.JSON;
 import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -18,6 +19,10 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import javax.websocket.Session;
 import me.jiaojie.ch.controller.CnWebsocket;
+import me.jiaojie.ch.model.basic.Order;
+import me.jiaojie.ch.model.project.Cn;
+import me.jiaojie.ch.model.project.Hk;
+import me.jiaojie.ch.model.project.Us;
 
 /**
  *
@@ -33,6 +38,117 @@ public class Threads {
     private static ExecutorService OrderSuccHandler;
     private static ScheduledExecutorService SenderHandler;
     private static ScheduledThreadPoolExecutor TestHandler;
+    private static ScheduledThreadPoolExecutor CnWebSocketHandler;
+    private static ScheduledThreadPoolExecutor HkWebSocketHandler;
+    private static ScheduledThreadPoolExecutor UsWebSocketHandler;
+
+    private static void runCnSocket() {
+        CnWebSocketHandler.scheduleAtFixedRate(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Cn cn = Cn.getInstance();
+                    int i = 0;
+                    while (i < 100) {
+                        i++;
+                        if (cn.getListNum() == 0) {
+                            continue;
+                        } else {
+                            Set<Session> sessionList = CnWebsocket.getOpenSessions();
+                            if (sessionList.size() > 0) {
+                                Order order = cn.getSuccOrder();
+                                sessionList.stream().filter((s) -> (s.isOpen())).forEach((s) -> {
+                                    try {
+                                        s.getBasicRemote().sendText(JSON.toJSONString(order));
+                                    } catch (Exception e) {
+                                        // 此处应有警告
+                                    }
+                                });
+                            } else {
+                                // do nothing
+                            }
+                        }
+                    }
+                } catch (InterruptedException e) {
+
+                } catch (NullPointerException e) {
+
+                }
+            }
+        }, 10, 1, TimeUnit.SECONDS);
+    }
+
+    private static void runHkSocket() {
+        HkWebSocketHandler.scheduleAtFixedRate(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Hk cn = Hk.getInstance();
+                    int i = 0;
+                    while (i < 100) {
+                        i++;
+                        if (cn.getListNum() == 0) {
+                            continue;
+                        } else {
+                            Set<Session> sessionList = CnWebsocket.getOpenSessions();
+                            if (sessionList.size() > 0) {
+                                Order order = cn.getSuccOrder();
+                                sessionList.stream().filter((s) -> (s.isOpen())).forEach((s) -> {
+                                    try {
+                                        s.getBasicRemote().sendText(JSON.toJSONString(order));
+                                    } catch (Exception e) {
+                                        // 此处应有警告
+                                    }
+                                });
+                            } else {
+                                // do nothing
+                            }
+                        }
+                    }
+                } catch (InterruptedException e) {
+
+                } catch (NullPointerException e) {
+
+                }
+            }
+        }, 10, 1, TimeUnit.SECONDS);
+    }
+
+    private static void runUsSocket() {
+        UsWebSocketHandler.scheduleAtFixedRate(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Us cn = Us.getInstance();
+                    int i = 0;
+                    while (i < 100) {
+                        i++;
+                        if (cn.getListNum() == 0) {
+                            continue;
+                        } else {
+                            Set<Session> sessionList = CnWebsocket.getOpenSessions();
+                            if (sessionList.size() > 0) {
+                                Order order = cn.getSuccOrder();
+                                sessionList.stream().filter((s) -> (s.isOpen())).forEach((s) -> {
+                                    try {
+                                        s.getBasicRemote().sendText(JSON.toJSONString(order));
+                                    } catch (Exception e) {
+                                        // 此处应有警告
+                                    }
+                                });
+                            } else {
+                                // do nothing
+                            }
+                        }
+                    }
+                } catch (InterruptedException e) {
+
+                } catch (NullPointerException e) {
+
+                }
+            }
+        }, 10, 1, TimeUnit.SECONDS);
+    }
 
     public static void Init() {
         if (Inited) {
@@ -44,23 +160,29 @@ public class Threads {
                 OrderHandler = Executors.newFixedThreadPool(2);
                 OrderSuccHandler = Executors.newFixedThreadPool(1);
                 TestHandler = new ScheduledThreadPoolExecutor(1);
-                TestHandler.scheduleAtFixedRate(new Runnable() {
-                    @Override
-                    public void run() {
-                        Set<Session> sessionList = CnWebsocket.getOpenSessions();
-                        if (sessionList.size() > 0) {
-                            sessionList.stream().filter((s) -> (s.isOpen())).forEach((s) -> {
-                                try {
-                                    s.getBasicRemote().sendText("Ack 当前总人数[" + sessionList.size() + "]");
-                                } catch (Exception e) {
-                                    // do nothing
-                                }
-                            });
-                        } else {
-                            MyLogger.info("Session List Empty!");
-                        }
-                    }
-                }, 1, 3, TimeUnit.SECONDS);
+                CnWebSocketHandler = new ScheduledThreadPoolExecutor(1);
+                HkWebSocketHandler = new ScheduledThreadPoolExecutor(1);
+                UsWebSocketHandler = new ScheduledThreadPoolExecutor(1);
+                runCnSocket();
+                runUsSocket();
+                runHkSocket();
+//                TestHandler.scheduleAtFixedRate(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        Set<Session> sessionList = CnWebsocket.getOpenSessions();
+//                        if (sessionList.size() > 0) {
+//                            sessionList.stream().filter((s) -> (s.isOpen())).forEach((s) -> {
+//                                try {
+//                                    s.getBasicRemote().sendText("Ack 当前总人数[" + sessionList.size() + "]");
+//                                } catch (Exception e) {
+//                                    // do nothing
+//                                }
+//                            });
+//                        } else {
+//                            MyLogger.info("Session List Empty!");
+//                        }
+//                    }
+//                }, 1, 3, TimeUnit.SECONDS);
                 Inited = true;
             }
         }
