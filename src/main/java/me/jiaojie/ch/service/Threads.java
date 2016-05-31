@@ -49,15 +49,13 @@ public class Threads {
                     public void run() {
                         Set<Session> sessionList = CnWebsocket.getOpenSessions();
                         if (sessionList.size() > 0) {
-                            for (Session s : sessionList) {
-                                if (s.isOpen()) {
-                                    try {
-                                        s.getBasicRemote().sendText("Ack 当前总人数[" + sessionList.size() + "]");
-                                    } catch (Exception e) {
-                                        // do nothing
-                                    }
+                            sessionList.stream().filter((s) -> (s.isOpen())).forEach((s) -> {
+                                try {
+                                    s.getBasicRemote().sendText("Ack 当前总人数[" + sessionList.size() + "]");
+                                } catch (Exception e) {
+                                    // do nothing
                                 }
-                            }
+                            });
                         } else {
                             MyLogger.info("Session List Empty!");
                         }
