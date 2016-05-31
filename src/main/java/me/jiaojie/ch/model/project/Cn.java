@@ -13,11 +13,8 @@ package me.jiaojie.ch.model.project;
 import java.util.concurrent.ConcurrentHashMap;
 import me.jiaojie.ch.model.basic.Order;
 import me.jiaojie.ch.model.basic.Symbol;
-import me.jiaojie.ch.model.basic.SymbolName;
-import me.jiaojie.ch.model.basic.Price;
 import me.jiaojie.ch.model.basic.Project;
 import java.util.TreeSet;
-import java.util.logging.Logger;
 
 /**
  *
@@ -25,8 +22,8 @@ import java.util.logging.Logger;
  */
 public class Cn extends Trade {
 
-    protected static Cn instance;
-    protected int initNum;
+    private static Cn instance;
+    private int initNum;
 
     protected Cn() {
         this.project = new Project("cn");
