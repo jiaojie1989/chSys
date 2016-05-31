@@ -1,46 +1,40 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C) 2016 SINA Corporation
+ *  
+ *  
+ * 
+ * This script is firstly created at 2016-05-30.
+ * 
+ * To see more infomation,
+ *    visit our official website http://jiaoyi.sina.com.cn/.
  */
 package me.jiaojie.ch.controller;
 
+import java.util.Map;
 import java.io.IOException;
-import java.util.List;
-import javax.validation.Valid;
+import java.io.InputStream;
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-import javax.servlet.http.HttpServletRequest;
-import java.io.InputStream;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.apache.commons.io.IOUtils;
-import com.google.gson.Gson;
 import com.alibaba.fastjson.JSON;
-import java.util.Map;
 import com.alibaba.fastjson.TypeReference;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.BiConsumer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import lombok.Cleanup;
 
 import me.jiaojie.ch.model.basic.Symbol;
 import me.jiaojie.ch.model.basic.PriceJsonObj;
 import me.jiaojie.ch.model.basic.OrderJsonObj;
 import me.jiaojie.ch.model.basic.SymbolName;
 import me.jiaojie.ch.model.project.Cn;
-import me.jiaojie.ch.service.MyLogger;
 import me.jiaojie.ch.service.Threads;
 import me.jiaojie.ch.service.runner.OrderBuy;
 import me.jiaojie.ch.service.runner.OrderSell;
 import me.jiaojie.ch.service.runner.SetPrice;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.ResponseBody;
-import lombok.Cleanup;
 import me.jiaojie.ch.model.basic.Order;
 import me.jiaojie.ch.model.basic.OrderDetail;
 import me.jiaojie.ch.model.basic.Price;
@@ -48,15 +42,24 @@ import me.jiaojie.ch.model.factory.BuySellTypeFactory;
 import me.jiaojie.ch.model.factory.ProjectFactory;
 
 /**
+ * A股撮合数据接口
  *
  * @author jiaojie
  */
 @Controller
 public class CnController {
 
+    /**
+     * Http Request Body
+     */
     @Autowired
     private HttpServletRequest request;
 
+    /**
+     * 更新价格
+     *
+     * @return String
+     */
     @RequestMapping(value = "/cn/price", method = {RequestMethod.POST, RequestMethod.PUT}, produces = "application/json;charset=utf-8")
     @ResponseBody
     public String updatePrice() {
@@ -83,6 +86,12 @@ public class CnController {
         }
     }
 
+    /**
+     * 获取某只股票的当前价格Json
+     *
+     * @param symbolName
+     * @return String
+     */
     @RequestMapping(value = "/cn/price/{symbolName}", method = {RequestMethod.GET}, produces = "application/json;charset=utf-8")
     @ResponseBody
     public String getPrice(@PathVariable String symbolName) {
@@ -91,6 +100,11 @@ public class CnController {
         return output;
     }
 
+    /**
+     * 下单接口
+     *
+     * @return String
+     */
     @RequestMapping(value = "/cn/order", method = {RequestMethod.POST, RequestMethod.PUT}, produces = "application/json;charset=utf-8")
     @ResponseBody
     public String mkOrder() {
@@ -126,6 +140,11 @@ public class CnController {
         return "ok";
     }
 
+    /**
+     * 取消订单接口
+     *
+     * @return
+     */
     @RequestMapping(value = "/cn/order", method = RequestMethod.DELETE)
     @ResponseBody
     public String cancelOrder() {
