@@ -12,6 +12,8 @@ package me.jiaojie.ch.model.project;
 
 import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 import me.jiaojie.ch.model.basic.Order;
 import me.jiaojie.ch.model.basic.Project;
 import me.jiaojie.ch.model.basic.Symbol;
@@ -24,6 +26,7 @@ public class Hk extends Trade {
 
     private static Hk instance;
     private int initNum;
+    private static LinkedBlockingQueue<Order> orderList;
 
     protected Hk() {
         this.project = new Project("hk");
@@ -51,5 +54,20 @@ public class Hk extends Trade {
             }
         }
         return instance;
+    }
+
+    @Override
+    public int getListNum() {
+        return orderList.size();
+    }
+
+    @Override
+    public Order getSuccOrder() throws InterruptedException, NullPointerException {
+        return orderList.poll(100, TimeUnit.MICROSECONDS);
+    }
+
+    @Override
+    public boolean addSuccOrder(Order order) {
+        return orderList.offer(order);
     }
 }

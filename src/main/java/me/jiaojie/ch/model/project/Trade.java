@@ -63,6 +63,12 @@ abstract public class Trade {
 
     abstract protected void init();
 
+    abstract public int getListNum();
+
+    abstract public Order getSuccOrder() throws InterruptedException;
+
+    abstract public boolean addSuccOrder(Order order);
+
     public void setSymbolPrice(Symbol symbol) {
         this.priceMap.put(symbol.getSymbolName(), symbol);
     }

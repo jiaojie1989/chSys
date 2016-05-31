@@ -11,10 +11,12 @@
 package me.jiaojie.ch.model.project;
 
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.LinkedBlockingQueue;
 import me.jiaojie.ch.model.basic.Order;
 import me.jiaojie.ch.model.basic.Symbol;
 import me.jiaojie.ch.model.basic.Project;
 import java.util.TreeSet;
+import java.util.concurrent.TimeUnit;
 
 /**
  *
@@ -24,6 +26,7 @@ public class Cn extends Trade {
 
     private static Cn instance;
     private int initNum;
+    private static LinkedBlockingQueue<Order> orderList;
 
     protected Cn() {
         this.project = new Project("cn");
@@ -40,6 +43,7 @@ public class Cn extends Trade {
         this.priceMap = new ConcurrentHashMap<String, Symbol>(this.initNum);
         this.buyOrderLock = new ConcurrentHashMap<String, Boolean>(this.initNum);
         this.sellOrderLock = new ConcurrentHashMap<String, Boolean>(this.initNum);
+        orderList = new LinkedBlockingQueue<Order>();
     }
 
     public static Cn getInstance() {
@@ -51,6 +55,21 @@ public class Cn extends Trade {
             }
         }
         return instance;
+    }
+
+    @Override
+    public int getListNum() {
+        return orderList.size();
+    }
+
+    @Override
+    public Order getSuccOrder() throws InterruptedException, NullPointerException {
+        return orderList.poll(100, TimeUnit.MICROSECONDS);
+    }
+    
+    @Override
+    public boolean addSuccOrder(Order order) {
+        return orderList.offer(order);
     }
 
 }
