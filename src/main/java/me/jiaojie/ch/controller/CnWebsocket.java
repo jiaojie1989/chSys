@@ -21,7 +21,7 @@ import java.util.TreeSet;
 import me.jiaojie.ch.service.Threads;
 
 /**
- *
+ * A股websocket数据接口
  * @author jiaojie <jiaojie@staff.sina.com>
  */
 @ServerEndpoint("/cn/result")
