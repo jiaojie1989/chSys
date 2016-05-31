@@ -41,12 +41,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
+ * 默认接口
  *
  * @author jiaojie <jiaojie@staff.sina.com>
  */
 //@Controller
 @RestController
-@RequestMapping("/default")
+@RequestMapping("/")
 public class DefaultController {
 
     @Autowired
@@ -75,57 +76,56 @@ public class DefaultController {
 //        carService.add(car);
 //        return "redirect:/car/list";
 //    }
-    @RequestMapping(value = {"/", "/welcome", "/index"}, method = {RequestMethod.GET, RequestMethod.POST}, produces = "text/plain")
+    @RequestMapping(value = {"/", "/welcome", "/index", "/index.php", "/index.jsp", "/index.do", "/index.html"}, method = {RequestMethod.GET, RequestMethod.POST}, produces = "text/plain")
     @ResponseBody
     public String welcome() {
         return "Hello, World!";
     }
 
-    @RequestMapping(value = "/all", method = RequestMethod.GET)
-    public String getAll() {
-//        ConcurrentHashMap<String, Symbol> map = Cn.getInstance().getPriceMap();
-//        System.out.println(map);
-        Symbol symbol = Cn.getInstance().getSymbol(new SymbolName("BABA"));
-        System.out.println(symbol.getTimestamp());
-        String output = JSON.toJSONString(symbol);
-        return output;
-    }
-
-    @RequestMapping(value = "/test", method = {RequestMethod.POST, RequestMethod.PUT})
-    public void test() {
-        InputStream is;
-        try {
-            is = request.getInputStream();
-            String contentStr = IOUtils.toString(is, "utf-8");
-            System.out.println(contentStr);
-        } catch (IOException e) {
-            System.out.println(e);
-        }
-    }
-
-    @RequestMapping(value = "/json", method = RequestMethod.POST)
-    public String testJson() {
-        Threads.Init();
-        String output = "";
-        InputStream is;
-        try {
-            is = request.getInputStream();
-            String contentStr = IOUtils.toString(is, "utf-8");
-            Map<String, PriceJsonObj> map = JSON.parseObject(contentStr, new TypeReference<Map<String, PriceJsonObj>>() {
-            });
-            map.forEach((String k, PriceJsonObj v) -> {
-                Threads.getPriceHandler().execute(new SetPrice(v, new SymbolName(k)));
-            });
-            output = "ok";
-        } catch (IOException e) {
-            System.out.println(e);
-            output = "io error";
-        } catch (Exception e) {
-            System.out.println(e);
-            output = "exception";
-        } finally {
-            return output;
-        }
-    }
-
+//    @RequestMapping(value = "/all", method = RequestMethod.GET)
+//    public String getAll() {
+////        ConcurrentHashMap<String, Symbol> map = Cn.getInstance().getPriceMap();
+////        System.out.println(map);
+//        Symbol symbol = Cn.getInstance().getSymbol(new SymbolName("BABA"));
+//        System.out.println(symbol.getTimestamp());
+//        String output = JSON.toJSONString(symbol);
+//        return output;
+//    }
+//
+//    @RequestMapping(value = "/test", method = {RequestMethod.POST, RequestMethod.PUT})
+//    public void test() {
+//        InputStream is;
+//        try {
+//            is = request.getInputStream();
+//            String contentStr = IOUtils.toString(is, "utf-8");
+//            System.out.println(contentStr);
+//        } catch (IOException e) {
+//            System.out.println(e);
+//        }
+//    }
+//
+//    @RequestMapping(value = "/json", method = RequestMethod.POST)
+//    public String testJson() {
+//        Threads.Init();
+//        String output = "";
+//        InputStream is;
+//        try {
+//            is = request.getInputStream();
+//            String contentStr = IOUtils.toString(is, "utf-8");
+//            Map<String, PriceJsonObj> map = JSON.parseObject(contentStr, new TypeReference<Map<String, PriceJsonObj>>() {
+//            });
+//            map.forEach((String k, PriceJsonObj v) -> {
+//                Threads.getPriceHandler().execute(new SetPrice(v, new SymbolName(k)));
+//            });
+//            output = "ok";
+//        } catch (IOException e) {
+//            System.out.println(e);
+//            output = "io error";
+//        } catch (Exception e) {
+//            System.out.println(e);
+//            output = "exception";
+//        } finally {
+//            return output;
+//        }
+//    }
 }
