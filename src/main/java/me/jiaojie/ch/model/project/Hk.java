@@ -3,31 +3,31 @@
  *  
  *  
  * 
- * This script is firstly created at 2016-05-23.
+ * This script is firstly created at 2016-05-31.
  * 
  * To see more infomation,
  *    visit our official website http://jiaoyi.sina.com.cn/.
  */
 package me.jiaojie.ch.model.project;
 
+import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
 import me.jiaojie.ch.model.basic.Order;
-import me.jiaojie.ch.model.basic.Symbol;
 import me.jiaojie.ch.model.basic.Project;
-import java.util.TreeSet;
+import me.jiaojie.ch.model.basic.Symbol;
 
 /**
  *
  * @author jiaojie <jiaojie@staff.sina.com>
  */
-public class Cn extends Trade {
+public class Hk extends Trade {
 
-    private static Cn instance;
+    private static Hk instance;
     private int initNum;
 
-    protected Cn() {
-        this.project = new Project("cn");
-        this.initNum = 3000;
+    protected Hk() {
+        this.project = new Project("hk");
+        this.initNum = 5000;
         this.init();
     }
 
@@ -42,15 +42,14 @@ public class Cn extends Trade {
         this.sellOrderLock = new ConcurrentHashMap<String, Boolean>(this.initNum);
     }
 
-    public static Cn getInstance() {
+    public static Hk getInstance() {
         if (instance == null) {
-            synchronized (Cn.class) {
+            synchronized (Hk.class) {
                 if (instance == null) {
-                    instance = new Cn();
+                    instance = new Hk();
                 }
             }
         }
         return instance;
     }
-
 }
