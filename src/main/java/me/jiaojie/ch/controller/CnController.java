@@ -47,6 +47,7 @@ import me.jiaojie.ch.model.factory.ProjectFactory;
  * @author jiaojie
  */
 @Controller
+@RequestMapping("/cn")
 public class CnController {
 
     /**
@@ -60,7 +61,7 @@ public class CnController {
      *
      * @return String
      */
-    @RequestMapping(value = "/cn/price", method = {RequestMethod.POST, RequestMethod.PUT}, produces = "application/json;charset=utf-8")
+    @RequestMapping(value = "/price", method = {RequestMethod.POST, RequestMethod.PUT}, produces = "application/json;charset=utf-8")
     @ResponseBody
     public String updatePrice() {
         Threads.Init();
@@ -72,7 +73,7 @@ public class CnController {
             Map<String, PriceJsonObj> map = JSON.parseObject(contentStr, new TypeReference<Map<String, PriceJsonObj>>() {
             });
             map.forEach((String k, PriceJsonObj v) -> {
-                Threads.getPriceHandler().execute(new SetPrice(v, new SymbolName(k)));
+                Threads.getPriceHandler().execute(new SetPrice(v, new SymbolName(k), "cn"));
             });
             output = JSON.toJSONString("ok");
         } catch (IOException e) {
@@ -92,7 +93,7 @@ public class CnController {
      * @param symbolName
      * @return String
      */
-    @RequestMapping(value = "/cn/price/{symbolName}", method = {RequestMethod.GET}, produces = "application/json;charset=utf-8")
+    @RequestMapping(value = "/price/{symbolName}", method = {RequestMethod.GET}, produces = "application/json;charset=utf-8")
     @ResponseBody
     public String getPrice(@PathVariable String symbolName) {
         Symbol symbol = Cn.getInstance().getSymbol(new SymbolName(symbolName.toUpperCase()));
@@ -105,7 +106,7 @@ public class CnController {
      *
      * @return String
      */
-    @RequestMapping(value = "/cn/order", method = {RequestMethod.POST, RequestMethod.PUT}, produces = "application/json;charset=utf-8")
+    @RequestMapping(value = "/order", method = {RequestMethod.POST, RequestMethod.PUT}, produces = "application/json;charset=utf-8")
     @ResponseBody
     public String mkOrder() {
         Threads.Init();
@@ -134,7 +135,7 @@ public class CnController {
         }
     }
 
-    @RequestMapping(value = "/cn/order/{orderId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/order/{orderId}", method = RequestMethod.GET)
     @ResponseBody
     public String getOrder() {
         return "ok";
@@ -145,7 +146,7 @@ public class CnController {
      *
      * @return
      */
-    @RequestMapping(value = "/cn/order", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/order", method = RequestMethod.DELETE)
     @ResponseBody
     public String cancelOrder() {
         Threads.Init();
