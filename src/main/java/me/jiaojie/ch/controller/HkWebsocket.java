@@ -3,33 +3,33 @@
  *  
  *  
  * 
- * This script is firstly created at 2016-05-30.
+ * This script is firstly created at 2016-05-31.
  * 
  * To see more infomation,
  *    visit our official website http://jiaoyi.sina.com.cn/.
  */
 package me.jiaojie.ch.controller;
 
+import java.io.IOException;
+import java.util.Set;
+import java.util.TreeSet;
 import javax.websocket.OnClose;
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
-import java.io.IOException;
-import java.util.Set;
-import java.util.TreeSet;
 import me.jiaojie.ch.service.Threads;
 
 /**
- * A股websocket数据接口
+ *
  * @author jiaojie <jiaojie@staff.sina.com>
  */
-@ServerEndpoint("/cn/result")
-public class CnWebsocket {
-
+@ServerEndpoint("/hk/result")
+public class HkWebsocket {
+    
     private static Set<Session> session_list = null;
 
-    public CnWebsocket() {
+    public HkWebsocket() {
         if (null == session_list) {
             Threads.Init();
             session_list = new TreeSet<Session>();
