@@ -97,7 +97,7 @@ public class Threads {
                                     try {
                                         s.getBasicRemote().sendText(JSON.toJSONString(order));
                                     } catch (Exception e) {
-                                        Mailer.sendErrorMail(e, Mailer.users, "HkSocket发送失败");
+                                        Mailer.sendErrorMail(e.getMessage(), Mailer.users, "HkSocket发送失败");
                                     }
                                 });
                             } else {
@@ -106,9 +106,9 @@ public class Threads {
                         }
                     }
                 } catch (InterruptedException e) {
-                    Mailer.sendExceptionMail(e, Mailer.users, "HkSocket-InterruptedException");
+                    Mailer.sendExceptionMail(e.getMessage(), Mailer.users, "HkSocket-InterruptedException");
                 } catch (NullPointerException e) {
-                    Mailer.sendExceptionMail(e, Mailer.users, "HkSocket-NullPointerException");
+                    Mailer.sendExceptionMail(e.getMessage(), Mailer.users, "HkSocket-NullPointerException");
                 }
             }
         }, 10, 1, TimeUnit.SECONDS);
@@ -133,7 +133,7 @@ public class Threads {
                                     try {
                                         s.getBasicRemote().sendText(JSON.toJSONString(order));
                                     } catch (Exception e) {
-                                        Mailer.sendErrorMail(e, Mailer.users, "UsSocket发送失败");
+                                        Mailer.sendErrorMail(e.getMessage(), Mailer.users, "UsSocket发送失败");
                                     }
                                 });
                             } else {
@@ -142,9 +142,9 @@ public class Threads {
                         }
                     }
                 } catch (InterruptedException e) {
-                    Mailer.sendExceptionMail(e, Mailer.users, "UsSocket-InterruptedException");
+                    Mailer.sendExceptionMail(e.getMessage(), Mailer.users, "UsSocket-InterruptedException");
                 } catch (NullPointerException e) {
-                    Mailer.sendExceptionMail(e, Mailer.users, "UsSocket-NullPointerException");
+                    Mailer.sendExceptionMail(e.getMessage(), Mailer.users, "UsSocket-NullPointerException");
                 }
             }
         }, 10, 1, TimeUnit.SECONDS);
