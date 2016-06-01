@@ -35,6 +35,7 @@ import me.jiaojie.ch.model.basic.Symbol;
 import me.jiaojie.ch.model.basic.PriceJsonObj;
 import me.jiaojie.ch.model.basic.SymbolName;
 import me.jiaojie.ch.model.project.Cn;
+import me.jiaojie.ch.service.Mailer;
 import me.jiaojie.ch.service.Threads;
 import me.jiaojie.ch.service.runner.SetPrice;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -79,6 +80,7 @@ public class DefaultController {
     @RequestMapping(value = {"/", "/welcome", "/index", "/index.php", "/index.jsp", "/index.do", "/index.html"}, method = {RequestMethod.GET, RequestMethod.POST}, produces = "text/plain")
     @ResponseBody
     public String welcome() {
+        Threads.Init();
         return "Hello, World!";
     }
 
