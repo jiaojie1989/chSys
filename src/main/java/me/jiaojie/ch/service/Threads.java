@@ -61,7 +61,7 @@ public class Threads {
                                     try {
                                         s.getBasicRemote().sendText(JSON.toJSONString(order));
                                     } catch (Exception e) {
-                                        Mailer.sendErrorMail(e, Mailer.users, "CnSocket发送失败");
+                                        Mailer.sendErrorMail(e.getMessage(), Mailer.users, "CnSocket发送失败");
                                     }
                                 });
                             } else {
@@ -70,9 +70,9 @@ public class Threads {
                         }
                     }
                 } catch (InterruptedException e) {
-                    Mailer.sendExceptionMail(e, Mailer.users, "CnSocket-InterruptedException");
+                    Mailer.sendExceptionMail(e.getMessage(), Mailer.users, "CnSocket-InterruptedException");
                 } catch (NullPointerException e) {
-                    Mailer.sendExceptionMail(e, Mailer.users, "CnSocket-NullPointerException");
+                    Mailer.sendExceptionMail(e.getMessage(), Mailer.users, "CnSocket-NullPointerException");
                 }
             }
         }, 10, 1, TimeUnit.SECONDS);
