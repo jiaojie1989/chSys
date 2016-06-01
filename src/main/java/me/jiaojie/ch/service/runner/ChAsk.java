@@ -63,7 +63,7 @@ public class ChAsk implements Runnable {
             } else {
                 Iterator<Order> I = succSet.iterator();
                 while (I.hasNext()) {
-                    Threads.getOrderSuccHandler().execute(new DealOrder(I.next()));
+                    Threads.getOrderSuccHandler().execute(new DealOrder(I.next(), projectName));
                 }
             }
         } else {

@@ -11,6 +11,10 @@
 package me.jiaojie.ch.service.runner;
 
 import me.jiaojie.ch.model.basic.Order;
+import me.jiaojie.ch.model.project.Cn;
+import me.jiaojie.ch.model.project.Hk;
+import me.jiaojie.ch.model.project.Trade;
+import me.jiaojie.ch.model.project.Us;
 
 /**
  *
@@ -19,13 +23,33 @@ import me.jiaojie.ch.model.basic.Order;
 public class DealOrder implements Runnable {
 
     private final Order order;
+    private final String projectName;
 
-    public DealOrder(Order order) {
+    public DealOrder(Order order, String projectName) {
         this.order = order;
+        this.projectName = projectName;
     }
 
     @Override
     public void run() {
-    }
+        Trade cn;
+        switch (projectName) {
+            case "cn":
+                cn = Cn.getInstance();
+                break;
+            case "us":
+                cn = Us.getInstance();
+                break;
+            case "hk":
+                cn = Hk.getInstance();
+                break;
+            default:
+                cn = null;
+                break;
+        }
 
+        if (null != cn) {
+            cn.addSuccOrder(order);
+        }
+    }
 }
