@@ -43,6 +43,7 @@ public class Us extends Trade {
         this.priceMap = new ConcurrentHashMap<String, Symbol>(this.initNum);
         this.buyOrderLock = new ConcurrentHashMap<String, Boolean>(this.initNum);
         this.sellOrderLock = new ConcurrentHashMap<String, Boolean>(this.initNum);
+        orderList = new LinkedBlockingQueue<Order>();
     }
 
     public static Us getInstance() {
