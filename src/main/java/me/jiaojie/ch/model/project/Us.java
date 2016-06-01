@@ -17,6 +17,7 @@ import java.util.concurrent.TimeUnit;
 import me.jiaojie.ch.model.basic.Order;
 import me.jiaojie.ch.model.basic.Project;
 import me.jiaojie.ch.model.basic.Symbol;
+import me.jiaojie.ch.service.MyLogger;
 
 /**
  *
@@ -69,6 +70,10 @@ public class Us extends Trade {
 
     @Override
     public boolean addSuccOrder(Order order) {
-        return orderList.offer(order);
+        MyLogger.debug(order);
+        boolean ret = orderList.offer(order);
+        MyLogger.debug(ret);
+        MyLogger.warn(orderList);
+        return ret;
     }
 }

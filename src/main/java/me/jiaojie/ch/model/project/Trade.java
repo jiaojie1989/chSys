@@ -86,7 +86,7 @@ abstract public class Trade {
                 return new TreeSet<Order>();
             } else {
                 this.getSellLock(symbol.getSymbolName());
-                TreeSet<Order> dealSet = new TreeSet<Order>();
+                TreeSet<Order> dealSet = new TreeSet<Order>(new SellComparator());
                 TreeSet<Order> origin = this.sellOrderMap.get(symbol.getSymbolName());
                 TreeSet<Order> tempTreeSet = new TreeSet<Order>(temp);
                 Iterator<Order> t = tempTreeSet.iterator();
@@ -167,12 +167,17 @@ abstract public class Trade {
             return new TreeSet<Order>();
         } else {
             SortedSet<Order> temp;
-            temp = this.buyOrderMap.get(symbol.getSymbolName()).tailSet(SsetFactory.getEmptyOrder(this.project, symbol, "buy"));
+            try {
+                temp = this.buyOrderMap.get(symbol.getSymbolName()).tailSet(SsetFactory.getEmptyOrder(this.project, symbol, "buy"));
+            } catch (Exception e) {
+                System.out.println(e);
+                return new TreeSet<Order>();
+            }
             if (temp.size() == 0) {
                 return new TreeSet<Order>();
             } else {
                 this.getBuyLock(symbol.getSymbolName());
-                TreeSet<Order> dealSet = new TreeSet<Order>();
+                TreeSet<Order> dealSet = new TreeSet<Order>(new BuyComparator());
                 TreeSet<Order> origin = this.buyOrderMap.get(symbol.getSymbolName());
                 TreeSet<Order> tempTreeSet = new TreeSet<Order>(temp);
                 Iterator<Order> t = tempTreeSet.iterator();

@@ -25,7 +25,7 @@ public class BuyComparator implements Comparator<Order> {
         if (A.getDetail().getOrderId().equals(B.getDetail().getOrderId())) {
             return 0;
         }
-        if (A.getOrderPrice().isNoLessThan(B.getOrderPrice())) {
+        if (A.getOrderPrice().isNoMoreThan(B.getOrderPrice())) {
             return 1;
         } else {
             return -1;

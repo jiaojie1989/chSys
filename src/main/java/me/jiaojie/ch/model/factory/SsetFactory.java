@@ -32,7 +32,7 @@ public class SsetFactory {
     }
 
     public static Order getEmptyOrder(Project project, Symbol symbol, String iType) {
-        OrderDetail detail = null;
+        OrderDetail detail = new OrderDetail();
         BuySellType type = BuySellTypeFactory.getType(iType);
         Price price;
         if ("sell" == iType) {
@@ -44,7 +44,7 @@ public class SsetFactory {
     }
 
     public static Order getEmptyOrder(Project project, Symbol symbol) {
-        OrderDetail detail = null;
+        OrderDetail detail = new OrderDetail();
         BuySellType type = BuySellTypeFactory.getType("buy");
         Price price = symbol.getBid();
         return new Order(project, detail, type, symbol, price);

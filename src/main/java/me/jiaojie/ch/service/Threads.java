@@ -19,6 +19,8 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import javax.websocket.Session;
 import me.jiaojie.ch.controller.CnWebsocket;
+import me.jiaojie.ch.controller.HkWebsocket;
+import me.jiaojie.ch.controller.UsWebsocket;
 import me.jiaojie.ch.model.basic.Order;
 import me.jiaojie.ch.model.project.Cn;
 import me.jiaojie.ch.model.project.Hk;
@@ -90,7 +92,7 @@ public class Threads {
                         if (cn.getListNum() == 0) {
                             continue;
                         } else {
-                            Set<Session> sessionList = CnWebsocket.getOpenSessions();
+                            Set<Session> sessionList = HkWebsocket.getOpenSessions();
                             if (sessionList.size() > 0) {
                                 Order order = cn.getSuccOrder();
                                 sessionList.stream().filter((s) -> (s.isOpen())).forEach((s) -> {
@@ -118,6 +120,7 @@ public class Threads {
         UsWebSocketHandler.scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {
+                MyLogger.debug("running ussocket");
                 try {
                     Us cn = Us.getInstance();
                     int i = 0;
@@ -126,9 +129,12 @@ public class Threads {
                         if (cn.getListNum() == 0) {
                             continue;
                         } else {
-                            Set<Session> sessionList = CnWebsocket.getOpenSessions();
+                            System.out.println("Total Num: " + cn.getListNum());
+                            Set<Session> sessionList = UsWebsocket.getOpenSessions();
+                            System.out.println("Connected Clients: " + sessionList.size());
                             if (sessionList.size() > 0) {
                                 Order order = cn.getSuccOrder();
+                                System.out.println("Order: " + order);
                                 sessionList.stream().filter((s) -> (s.isOpen())).forEach((s) -> {
                                     try {
                                         s.getBasicRemote().sendText(JSON.toJSONString(order));
@@ -145,6 +151,8 @@ public class Threads {
                     Mailer.sendExceptionMail(e.getMessage(), Mailer.users, "UsSocket-InterruptedException");
                 } catch (NullPointerException e) {
                     Mailer.sendExceptionMail(e.getMessage(), Mailer.users, "UsSocket-NullPointerException");
+                } finally {
+//                    MyLogger.debug("end running ussocket");
                 }
             }
         }, 10, 1, TimeUnit.SECONDS);

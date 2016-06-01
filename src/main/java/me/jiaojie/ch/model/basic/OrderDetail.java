@@ -19,7 +19,7 @@ import me.jiaojie.ch.service.MyLogger;
  */
 public class OrderDetail {
 
-    private String orderId;
+    private String orderId = "";
     private String sid;
     private int amount;
     private long timestamp;
@@ -32,7 +32,10 @@ public class OrderDetail {
     }
 
     public OrderDetail() {
-
+        this.orderId = "_0_";
+        this.sid = "110";
+        this.amount = 12311231;
+        this.timestamp = 1;
     }
 
     /**
