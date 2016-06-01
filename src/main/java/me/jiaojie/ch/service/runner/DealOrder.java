@@ -15,6 +15,7 @@ import me.jiaojie.ch.model.project.Cn;
 import me.jiaojie.ch.model.project.Hk;
 import me.jiaojie.ch.model.project.Trade;
 import me.jiaojie.ch.model.project.Us;
+import me.jiaojie.ch.service.MyLogger;
 
 /**
  *
@@ -49,6 +50,7 @@ public class DealOrder implements Runnable {
         }
 
         if (null != cn) {
+            MyLogger.debug("Succ Order:" + order);
             cn.addSuccOrder(order);
         }
     }

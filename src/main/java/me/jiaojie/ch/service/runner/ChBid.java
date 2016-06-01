@@ -20,6 +20,7 @@ import me.jiaojie.ch.model.project.Cn;
 import me.jiaojie.ch.model.project.Hk;
 import me.jiaojie.ch.model.project.Trade;
 import me.jiaojie.ch.model.project.Us;
+import me.jiaojie.ch.service.MyLogger;
 import me.jiaojie.ch.service.Threads;
 
 /**
@@ -58,6 +59,7 @@ public class ChBid implements Runnable {
 
         if (null != cn) {
             TreeSet succSet = cn.getSuccSellTrade(symbol);
+            MyLogger.debug("Succ Set:" + succSet);
             if (succSet.isEmpty()) {
 
             } else {

@@ -20,6 +20,7 @@ import java.util.TreeSet;
 import me.jiaojie.ch.model.project.Hk;
 import me.jiaojie.ch.model.project.Trade;
 import me.jiaojie.ch.model.project.Us;
+import me.jiaojie.ch.service.MyLogger;
 import me.jiaojie.ch.service.Threads;
 
 /**
@@ -58,6 +59,7 @@ public class ChAsk implements Runnable {
 
         if (null != cn) {
             TreeSet succSet = cn.getSuccBuyTrade(symbol);
+            MyLogger.debug("Succ Set:" + succSet);
             if (succSet.isEmpty()) {
 
             } else {

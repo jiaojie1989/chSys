@@ -65,6 +65,7 @@ public class OrderSell implements Runnable {
                 project.mkBuyOrder(order);
             } else {
                 if (order.canDeal()) {
+                    project.addSuccOrder(order);
                     MyLogger.info("Succ Sell: " + order);
                 } else {
                     project.mkSellOrder(order);

@@ -19,6 +19,7 @@ import me.jiaojie.ch.model.project.Cn;
 import me.jiaojie.ch.model.project.Hk;
 import me.jiaojie.ch.model.project.Trade;
 import me.jiaojie.ch.model.project.Us;
+import me.jiaojie.ch.service.MyLogger;
 import me.jiaojie.ch.service.Threads;
 
 /**
@@ -59,6 +60,7 @@ public class SetPrice implements Runnable {
 
         if (null != project) {
             project.setSymbolPrice(this.symbol);
+            MyLogger.debug(this.symbol);
             Threads.getPriceScanner().execute(new ChAsk(symbol, projectName));
             Threads.getPriceScanner().execute(new ChBid(symbol, projectName));
         }

@@ -66,6 +66,7 @@ public class OrderBuy implements Runnable {
             } else {
                 if (order.canDeal()) {
                     MyLogger.info("Succ Buy: " + order);
+                    project.addSuccOrder(order);
                 } else {
                     MyLogger.info("Queued Buy: " + order);
                     project.mkBuyOrder(order);
