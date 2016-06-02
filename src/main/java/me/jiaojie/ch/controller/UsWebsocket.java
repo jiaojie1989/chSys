@@ -34,6 +34,7 @@ import me.jiaojie.ch.service.Threads;
 public class UsWebsocket {
 
     private static Set<Session> session_list = null;
+    private static boolean linkStatus = false;
 
     public UsWebsocket() {
         if (null == session_list) {
@@ -77,12 +78,11 @@ public class UsWebsocket {
 
     @OnOpen
     public void onOpen(Session session) throws IOException {
-        System.out.println(session);
         synchronized (session_list) {
             session_list = session.getOpenSessions();
+            linkStatus = true;
         }
         System.out.println("Client connected");
-        System.out.println(session_list);
         session.getBasicRemote().sendText("Welcome! Total clients " + session_list.size() + ".\r\n\r\n");
 
         try {
@@ -107,13 +107,19 @@ public class UsWebsocket {
     public void onClose(Session session) {
         synchronized (session_list) {
             session_list = session.getOpenSessions();
+            if (session_list.size() == 0) {
+                linkStatus = false;
+            }
         }
         System.out.println("Connection closed");
 
     }
 
     public static Set<Session> getOpenSessions() {
-        System.out.println(session_list);
         return session_list;
+    }
+
+    public static boolean getLinkStatus() {
+        return linkStatus;
     }
 }

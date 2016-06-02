@@ -22,12 +22,14 @@ import me.jiaojie.ch.service.Threads;
 
 /**
  * A股websocket数据接口
+ *
  * @author jiaojie <jiaojie@staff.sina.com>
  */
 @ServerEndpoint("/cn/result")
 public class CnWebsocket {
 
     private static Set<Session> session_list = null;
+    private static boolean linkStatus = false;
 
     public CnWebsocket() {
         if (null == session_list) {
@@ -40,6 +42,7 @@ public class CnWebsocket {
     public void onMessage(String message, Session session) {
         synchronized (session_list) {
             session_list = session.getOpenSessions();
+            linkStatus = true;
         }
         if (message.toUpperCase().equals("PING")) {
             try {
@@ -64,6 +67,7 @@ public class CnWebsocket {
         System.out.println(session);
         synchronized (session_list) {
             session_list = session.getOpenSessions();
+            linkStatus = true;
         }
         System.out.println("Client connected");
         session.getBasicRemote().sendText("Welcome! Total clients " + session_list.size() + ".\r\n\r\n");
@@ -73,6 +77,9 @@ public class CnWebsocket {
     public void onClose(Session session) {
         synchronized (session_list) {
             session_list = session.getOpenSessions();
+            if (session_list.size() == 0) {
+                linkStatus = false;
+            }
         }
         System.out.println("Connection closed");
 
@@ -80,5 +87,9 @@ public class CnWebsocket {
 
     public static Set<Session> getOpenSessions() {
         return session_list;
+    }
+
+    public static boolean getLinkStatus() {
+        return linkStatus;
     }
 }
