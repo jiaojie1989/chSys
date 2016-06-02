@@ -10,6 +10,8 @@
  */
 package me.jiaojie.ch.model.basic;
 
+import me.jiaojie.ch.service.MyLogger;
+
 /**
  *
  * @author jiaojie <jiaojie@staff.sina.com>
@@ -100,9 +102,8 @@ public class OrderJsonObj {
      */
     public long getTimestamp() {
         if (0 == timestamp) {
-        } else {
             setTimestamp(System.currentTimeMillis() / 1000);
-        }
+        } 
         return timestamp;
     }
 
