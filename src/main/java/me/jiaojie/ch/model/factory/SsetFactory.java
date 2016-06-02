@@ -53,8 +53,8 @@ public class SsetFactory {
     public static OrderDetail generateOrderDetail() {
         return new OrderDetail();
     }
-    
+
     public static Symbol getEmptySymbol(String project, String name) {
-        return new Symbol(ProjectFactory.getProject(project), new SymbolName(name), new Price(99999999999.9), new Price(-1.1));
+        return new Symbol(ProjectFactory.getProject(project), new SymbolName(name), new Price(-1.1), new Price(99999999999.9));
     }
 }
