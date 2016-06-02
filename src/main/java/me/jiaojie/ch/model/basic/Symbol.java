@@ -11,6 +11,7 @@
 package me.jiaojie.ch.model.basic;
 
 import java.util.Objects;
+import me.jiaojie.ch.service.MyLogger;
 import org.apache.commons.codec.digest.DigestUtils;
 
 /**
@@ -50,6 +51,9 @@ public class Symbol {
     }
 
     public boolean canDeal(BuySellType queryType, Price queryPrice) {
+//        MyLogger.debug("" + queryType + " - " + queryPrice + " - bid " + bid + " - ask " + ask);
+//        MyLogger.debug("origin " + queryType + " - fact " + queryType.isBuyType());
+        
         if (queryType.isBuyType()) {
             return this.canBuyOrderDeal(queryPrice);
         } else {
@@ -58,11 +62,13 @@ public class Symbol {
     }
 
     protected boolean canBuyOrderDeal(Price queryPrice) {
-        return this.getBid().isNoMoreThan(queryPrice);
+        return this.getBid().isNoLessThan(queryPrice);
     }
 
     protected boolean canSellOrderDeal(Price queryPrice) {
-        return this.getAsk().isNoLessThan(queryPrice);
+        boolean ret = this.getAsk().isNoMoreThan(queryPrice);
+//        MyLogger.debug("" + ret + " - " + this.getAsk() + " - " + queryPrice);
+        return ret;
     }
 
     public Price getDealPrice(BuySellType queryType) {
