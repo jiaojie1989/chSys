@@ -56,18 +56,20 @@ public class Threads {
                         if (cn.getListNum() == 0) {
                             continue;
                         } else {
-                            Set<Session> sessionList = CnWebsocket.getOpenSessions();
-                            if (sessionList.size() > 0) {
-                                Order order = cn.getSuccOrder();
-                                sessionList.stream().filter((s) -> (s.isOpen())).forEach((s) -> {
-                                    try {
-                                        s.getBasicRemote().sendText(JSON.toJSONString(order));
-                                    } catch (Exception e) {
-                                        Mailer.sendErrorMail(e.getMessage(), Mailer.users, "CnSocket发送失败");
-                                    }
-                                });
-                            } else {
-                                // do nothing
+                            if (CnWebsocket.getLinkStatus()) {
+                                Set<Session> sessionList = CnWebsocket.getOpenSessions();
+                                if (sessionList.size() > 0) {
+                                    Order order = cn.getSuccOrder();
+                                    sessionList.stream().filter((s) -> (s.isOpen())).forEach((s) -> {
+                                        try {
+                                            s.getBasicRemote().sendText(JSON.toJSONString(order));
+                                        } catch (Exception e) {
+                                            Mailer.sendErrorMail(e.getMessage(), Mailer.users, "CnSocket发送失败");
+                                        }
+                                    });
+                                } else {
+                                    // do nothing
+                                }
                             }
                         }
                     }
@@ -92,18 +94,20 @@ public class Threads {
                         if (cn.getListNum() == 0) {
                             continue;
                         } else {
-                            Set<Session> sessionList = HkWebsocket.getOpenSessions();
-                            if (sessionList.size() > 0) {
-                                Order order = cn.getSuccOrder();
-                                sessionList.stream().filter((s) -> (s.isOpen())).forEach((s) -> {
-                                    try {
-                                        s.getBasicRemote().sendText(JSON.toJSONString(order));
-                                    } catch (Exception e) {
-                                        Mailer.sendErrorMail(e.getMessage(), Mailer.users, "HkSocket发送失败");
-                                    }
-                                });
-                            } else {
-                                // do nothing
+                            if (HkWebsocket.getLinkStatus()) {
+                                Set<Session> sessionList = HkWebsocket.getOpenSessions();
+                                if (sessionList.size() > 0) {
+                                    Order order = cn.getSuccOrder();
+                                    sessionList.stream().filter((s) -> (s.isOpen())).forEach((s) -> {
+                                        try {
+                                            s.getBasicRemote().sendText(JSON.toJSONString(order));
+                                        } catch (Exception e) {
+                                            Mailer.sendErrorMail(e.getMessage(), Mailer.users, "HkSocket发送失败");
+                                        }
+                                    });
+                                } else {
+                                    // do nothing
+                                }
                             }
                         }
                     }
@@ -129,7 +133,7 @@ public class Threads {
                         if (cn.getListNum() == 0) {
                             continue;
                         } else {
-                            System.out.println("Total Num: " + cn.getListNum());
+//                            System.out.println("Total Num: " + cn.getListNum());
                             if (UsWebsocket.getLinkStatus()) {
                                 Set<Session> sessionList = UsWebsocket.getOpenSessions();
                                 System.out.println("Connected Clients: " + sessionList.size());
