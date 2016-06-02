@@ -28,7 +28,6 @@ public class BuySellTypeFactory {
         } else if (type.equals("sell")) {
             type = "-1";
         }
-        MyLogger.info(type);
         if (typeHashMap.containsKey(type)) {
 
         } else {
