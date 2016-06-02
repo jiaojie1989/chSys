@@ -58,8 +58,9 @@ public class ChBid implements Runnable {
         }
 
         if (null != cn) {
+//            MyLogger.info(symbol.getBid());
             TreeSet succSet = cn.getSuccSellTrade(symbol);
-            MyLogger.debug("Succ Set:" + succSet);
+//            MyLogger.debug("Succ Set:" + succSet);
             if (succSet.isEmpty()) {
 
             } else {

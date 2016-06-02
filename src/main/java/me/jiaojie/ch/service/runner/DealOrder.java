@@ -50,7 +50,7 @@ public class DealOrder implements Runnable {
         }
 
         if (null != cn) {
-            MyLogger.debug("Succ Order:" + order);
+//            MyLogger.debug("Succ Order:" + order);
             cn.addSuccOrder(order);
         }
     }

@@ -60,7 +60,7 @@ public class SetPrice implements Runnable {
 
         if (null != project) {
             project.setSymbolPrice(this.symbol);
-            MyLogger.debug(this.symbol);
+//            MyLogger.debug(this.symbol);
             Threads.getPriceScanner().execute(new ChAsk(symbol, projectName));
             Threads.getPriceScanner().execute(new ChBid(symbol, projectName));
         }

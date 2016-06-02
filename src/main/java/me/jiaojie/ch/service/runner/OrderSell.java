@@ -58,16 +58,18 @@ public class OrderSell implements Runnable {
 
         if (null != project) {
             Symbol symbol = project.getSymbol(orderObj.getSymbol());
-            order = new Order(ProjectFactory.getProject(this.projectName), new OrderDetail(orderObj.getOrderId(), orderObj.getSid(), orderObj.getAmount(), orderObj.getTimestamp()), BuySellTypeFactory.getType("buy"), symbol, new Price(orderObj.getPrice()), this.orderObj.getTimestamp());
+            order = new Order(ProjectFactory.getProject(this.projectName), new OrderDetail(orderObj.getOrderId(), orderObj.getSid(), orderObj.getAmount(), orderObj.getTimestamp()), BuySellTypeFactory.getType("sell"), symbol, new Price(orderObj.getPrice()), this.orderObj.getTimestamp());
 
             if (orderObj.getWait() == 1) {
-                MyLogger.info("Queued Buy: " + order);
-                project.mkBuyOrder(order);
+//                MyLogger.info("Queued Sell Wait: " + order);
+                project.mkSellOrder(order);
             } else {
                 if (order.canDeal()) {
+                    order.setSucc(symbol);
                     project.addSuccOrder(order);
-                    MyLogger.info("Succ Sell: " + order);
+//                    MyLogger.info("Succ Sell: " + order);
                 } else {
+//                    MyLogger.info("Queued Sell: " + order);
                     project.mkSellOrder(order);
                 }
             }

@@ -59,7 +59,7 @@ public class ChAsk implements Runnable {
 
         if (null != cn) {
             TreeSet succSet = cn.getSuccBuyTrade(symbol);
-            MyLogger.debug("Succ Set:" + succSet);
+//            MyLogger.debug("Succ Set:" + succSet);
             if (succSet.isEmpty()) {
 
             } else {
