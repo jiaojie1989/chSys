@@ -10,6 +10,8 @@
  */
 package me.jiaojie.ch.model.basic;
 
+import me.jiaojie.ch.service.MyLogger;
+
 /**
  *
  * @author jiaojie <jiaojie@staff.sina.com>
@@ -21,7 +23,7 @@ public class Price {
     public Price(double price) {
         this.price = price;
     }
-    
+
     public Price(String price) {
         this.price = Double.valueOf(price);
     }
@@ -31,10 +33,12 @@ public class Price {
     }
 
     public boolean isNoMoreThan(Price queryPrice) {
+//        MyLogger.debug("query<=this query " + queryPrice.getPrice() + " - this " + this.getPrice());
         return queryPrice.getPrice() <= this.getPrice();
     }
 
     public boolean isNoLessThan(Price queryPrice) {
+//        MyLogger.debug("query>=this query " + queryPrice.getPrice() + " - this " + this.getPrice());
         return queryPrice.getPrice() >= this.getPrice();
     }
 
