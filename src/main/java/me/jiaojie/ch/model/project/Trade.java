@@ -107,18 +107,15 @@ abstract public class Trade {
         Symbol symbol = order.getSymbol();
         boolean status = false;
         this.getSellLock(symbol.getSymbolName());
-        if (!this.sellOrderMap.contains(symbol.getSymbolName())) {
+        if (!this.sellOrderMap.containsKey(symbol.getSymbolName())) {
             this.sellOrderMap.put(symbol.getSymbolName(), SsetFactory.getEmptySet(new SellComparator()));
         }
-        if (this.sellOrderMap.get(symbol.getSymbolName()).size() == 0) {
-        } else {
-            if (this.sellOrderMap.get(symbol.getSymbolName()).contains(order)) {
-                TreeSet<Order> temp = SsetFactory.getEmptySet(new SellComparator());
-                temp.addAll(this.sellOrderMap.get(symbol.getSymbolName()));
-                temp.add(order);
-                this.sellOrderMap.put(symbol.getSymbolName(), temp);
-                status = true;
-            }
+        if (!this.sellOrderMap.get(symbol.getSymbolName()).contains(order)) {
+            TreeSet<Order> temp = SsetFactory.getEmptySet(new BuyComparator());
+            temp.addAll(this.sellOrderMap.get(symbol.getSymbolName()));
+            temp.add(order);
+            this.sellOrderMap.put(symbol.getSymbolName(), temp);
+            status = true;
         }
         this.unlockSellLock(symbol.getSymbolName());
         return status;
@@ -244,7 +241,7 @@ abstract public class Trade {
     protected void unlockBuyLock(String name) {
         while (true) {
             if (this.buyOrderLock.replace(name, new Boolean(true), new Boolean(false))) {
-                MyLogger.debug("Release Lock - " + name);
+//                MyLogger.debug("Release Lock - " + name);
                 break;
             }
         }
