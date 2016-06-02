@@ -12,6 +12,7 @@ package me.jiaojie.ch.model.op;
 
 import java.util.Comparator;
 import me.jiaojie.ch.model.basic.Order;
+import me.jiaojie.ch.service.MyLogger;
 
 /**
  *
@@ -21,13 +22,14 @@ public class SellComparator implements Comparator<Order> {
 
     @Override
     public int compare(Order A, Order B) {
+//        MyLogger.debug("[Sell] A:" + A.getOrderPrice() + " - B:" + B.getOrderPrice());
         if (A.getDetail().getOrderId().equals(B.getDetail().getOrderId())) {
             return 0;
         }
-        if (A.getOrderPrice().isNoLessThan(B.getOrderPrice())) {
-            return 1;
-        } else {
+        if (A.getOrderPrice().isNoMoreThan(B.getOrderPrice())) {
             return -1;
+        } else {
+            return 1;
         }
     }
 }

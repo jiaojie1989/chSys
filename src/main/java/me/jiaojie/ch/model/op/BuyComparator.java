@@ -22,13 +22,14 @@ public class BuyComparator implements Comparator<Order> {
 
     @Override
     public int compare(Order A, Order B) {
+//        MyLogger.debug("[Buy ] A:" + A.getOrderPrice() + " - B:" + B.getOrderPrice());
         if (A.getDetail().getOrderId().equals(B.getDetail().getOrderId())) {
             return 0;
         }
-        if (A.getOrderPrice().isNoMoreThan(B.getOrderPrice())) {
-            return 1;
-        } else {
+        if (A.getOrderPrice().isNoLessThan(B.getOrderPrice())) {
             return -1;
+        } else {
+            return 1;
         }
     }
 }
