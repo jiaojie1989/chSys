@@ -70,10 +70,6 @@ public class Us extends Trade {
 
     @Override
     public boolean addSuccOrder(Order order) {
-        MyLogger.debug(order);
-        boolean ret = orderList.offer(order);
-        MyLogger.debug(ret);
-        MyLogger.warn(orderList);
-        return ret;
+        return orderList.offer(order);
     }
 }
