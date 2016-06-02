@@ -120,7 +120,7 @@ public class Threads {
         UsWebSocketHandler.scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {
-                MyLogger.debug("running ussocket");
+//                MyLogger.debug("running ussocket");
                 try {
                     Us cn = Us.getInstance();
                     int i = 0;
@@ -130,20 +130,22 @@ public class Threads {
                             continue;
                         } else {
                             System.out.println("Total Num: " + cn.getListNum());
-                            Set<Session> sessionList = UsWebsocket.getOpenSessions();
-                            System.out.println("Connected Clients: " + sessionList.size());
-                            if (sessionList.size() > 0) {
-                                Order order = cn.getSuccOrder();
-                                System.out.println("Order: " + order);
-                                sessionList.stream().filter((s) -> (s.isOpen())).forEach((s) -> {
-                                    try {
-                                        s.getBasicRemote().sendText(JSON.toJSONString(order));
-                                    } catch (Exception e) {
-                                        Mailer.sendErrorMail(e.getMessage(), Mailer.users, "UsSocket发送失败");
-                                    }
-                                });
-                            } else {
-                                // do nothing
+                            if (UsWebsocket.getLinkStatus()) {
+                                Set<Session> sessionList = UsWebsocket.getOpenSessions();
+                                System.out.println("Connected Clients: " + sessionList.size());
+                                if (sessionList.size() > 0) {
+                                    Order order = cn.getSuccOrder();
+//                                    System.out.println("Order: " + order);
+                                    sessionList.stream().filter((s) -> (s.isOpen())).forEach((s) -> {
+                                        try {
+                                            s.getBasicRemote().sendText(JSON.toJSONString(order));
+                                        } catch (Exception e) {
+                                            Mailer.sendErrorMail(e.getMessage(), Mailer.users, "UsSocket发送失败");
+                                        }
+                                    });
+                                } else {
+                                    // do nothing
+                                }
                             }
                         }
                     }
