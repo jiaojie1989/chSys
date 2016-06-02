@@ -43,6 +43,7 @@ public class Threads {
     private static ScheduledThreadPoolExecutor CnWebSocketHandler;
     private static ScheduledThreadPoolExecutor HkWebSocketHandler;
     private static ScheduledThreadPoolExecutor UsWebSocketHandler;
+    private final static int AlertNum = 100;
 
     private static void runCnSocket() {
         CnWebSocketHandler.scheduleAtFixedRate(new Runnable() {
@@ -80,6 +81,16 @@ public class Threads {
                 }
             }
         }, 10, 1, TimeUnit.SECONDS);
+        CnWebSocketHandler.scheduleAtFixedRate(new Runnable() {
+            @Override
+            public void run() {
+                Cn cn = Cn.getInstance();
+                int totalNum = cn.getListNum();
+                if (totalNum >= AlertNum) {
+                    Mailer.sendAlertMail("Cn当前待处理订单为" + totalNum + "！", Mailer.users, "待处理订单过多");
+                }
+            }
+        }, 10, 300, TimeUnit.SECONDS);
     }
 
     private static void runHkSocket() {
@@ -118,6 +129,16 @@ public class Threads {
                 }
             }
         }, 10, 1, TimeUnit.SECONDS);
+        HkWebSocketHandler.scheduleAtFixedRate(new Runnable() {
+            @Override
+            public void run() {
+                Hk cn = Hk.getInstance();
+                int totalNum = cn.getListNum();
+                if (totalNum >= AlertNum) {
+                    Mailer.sendAlertMail("Hk当前待处理订单为" + totalNum + "！", Mailer.users, "待处理订单过多");
+                }
+            }
+        }, 10, 300, TimeUnit.SECONDS);
     }
 
     private static void runUsSocket() {
@@ -162,6 +183,16 @@ public class Threads {
                 }
             }
         }, 10, 1, TimeUnit.SECONDS);
+        UsWebSocketHandler.scheduleAtFixedRate(new Runnable() {
+            @Override
+            public void run() {
+                Us cn = Us.getInstance();
+                int totalNum = cn.getListNum();
+                if (totalNum >= AlertNum) {
+                    Mailer.sendAlertMail("Us当前待处理订单为" + totalNum + "！", Mailer.users, "待处理订单过多");
+                }
+            }
+        }, 10, 300, TimeUnit.SECONDS);
     }
 
     public static void Init() {
@@ -170,12 +201,12 @@ public class Threads {
             synchronized (Threads.class) {
                 if (Inited) {
                 } else {
-                    HealthReportor = Executors.newScheduledThreadPool(1);
+//                    HealthReportor = Executors.newScheduledThreadPool(1);
                     PriceHandler = Executors.newFixedThreadPool(4);
                     PriceScanner = Executors.newFixedThreadPool(8);
                     OrderHandler = Executors.newFixedThreadPool(2);
                     OrderSuccHandler = Executors.newFixedThreadPool(1);
-                    TestHandler = new ScheduledThreadPoolExecutor(1);
+//                    TestHandler = new ScheduledThreadPoolExecutor(1);
                     CnWebSocketHandler = new ScheduledThreadPoolExecutor(1);
                     HkWebSocketHandler = new ScheduledThreadPoolExecutor(1);
                     UsWebSocketHandler = new ScheduledThreadPoolExecutor(1);
