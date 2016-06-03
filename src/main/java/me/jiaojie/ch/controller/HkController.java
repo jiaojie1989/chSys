@@ -12,6 +12,7 @@ package me.jiaojie.ch.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
@@ -58,7 +59,7 @@ public class HkController {
      *
      * @return String
      */
-    @RequestMapping(value = "/price", method = {RequestMethod.POST, RequestMethod.PUT}, produces = "application/json;charset=utf-8")
+    @RequestMapping(value = "/price", method = {RequestMethod.POST}, produces = "application/json;charset=utf-8")
     @ResponseBody
     public String updatePrice() {
         Threads.Init();
@@ -103,7 +104,7 @@ public class HkController {
      *
      * @return String
      */
-    @RequestMapping(value = "/order", method = {RequestMethod.POST, RequestMethod.PUT}, produces = "application/json;charset=utf-8")
+    @RequestMapping(value = "/order", method = {RequestMethod.POST}, produces = "application/json;charset=utf-8")
     @ResponseBody
     public String mkOrder() {
         Threads.Init();
@@ -131,10 +132,16 @@ public class HkController {
         }
     }
 
-    @RequestMapping(value = "/order/{orderId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/order/buy/{symbolName}", method = RequestMethod.GET, produces = "application/json;charset=utf-8")
     @ResponseBody
-    public String getOrder() {
-        return "ok";
+    public String getBuyOrder(@PathVariable String symbolName) {
+        return JSON.toJSONString(Hk.getInstance().getBuyOrderMap(symbolName.toUpperCase()), SerializerFeature.DisableCircularReferenceDetect);
+    }
+
+    @RequestMapping(value = "/order/sell/{symbolName}", method = RequestMethod.GET, produces = "application/json;charset=utf-8")
+    @ResponseBody
+    public String getSellOrder(@PathVariable String symbolName) {
+        return JSON.toJSONString(Hk.getInstance().getSellOrderMap(symbolName.toUpperCase()), SerializerFeature.DisableCircularReferenceDetect);
     }
 
     /**
@@ -142,7 +149,7 @@ public class HkController {
      *
      * @return
      */
-    @RequestMapping(value = "/order", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/order", method = RequestMethod.PUT)
     @ResponseBody
     public String cancelOrder() {
         Threads.Init();
