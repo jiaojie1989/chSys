@@ -61,6 +61,22 @@ abstract public class Trade {
         this.priceMap.put(name.toString(), new Symbol(project, name, ask, bid));
     }
 
+    public TreeSet<?> getSellOrderMap(String symbolName) {
+        return sellOrderMap.get(symbolName);
+    }
+
+    public TreeSet<?> getBuyOrderMap(String symbolName) {
+        return buyOrderMap.get(symbolName);
+    }
+
+    public Object getAllSellMap() {
+        return sellOrderMap;
+    }
+
+    public Object getAllBuyMap() {
+        return buyOrderMap;
+    }
+
     abstract protected void init();
 
     abstract public int getListNum();
@@ -133,6 +149,18 @@ abstract public class Trade {
                 temp.remove(order);
                 this.sellOrderMap.put(symbol.getSymbolName(), temp);
                 status = true;
+            } else {
+                TreeSet<Order> temp = SsetFactory.getEmptySet(new SellComparator());
+                Iterator<Order> t = this.sellOrderMap.get(symbol.getSymbolName()).iterator();
+                while (t.hasNext()) {
+                    Order itOrder = t.next();
+                    if (order.getDetail().getOrderId().equals(itOrder.getDetail().getOrderId())) {
+                        status = true;
+                    } else {
+                        temp.add(itOrder);
+                    }
+                }
+                this.sellOrderMap.put(symbol.getSymbolName(), temp);
             }
         }
         this.unlockSellLock(symbol.getSymbolName());
@@ -221,6 +249,18 @@ abstract public class Trade {
                 temp.remove(order);
                 this.buyOrderMap.put(symbol.getSymbolName(), temp);
                 status = true;
+            } else {
+                TreeSet<Order> temp = SsetFactory.getEmptySet(new BuyComparator());
+                Iterator<Order> t = this.sellOrderMap.get(symbol.getSymbolName()).iterator();
+                while (t.hasNext()) {
+                    Order itOrder = t.next();
+                    if (order.getDetail().getOrderId().equals(itOrder.getDetail().getOrderId())) {
+                        status = true;
+                    } else {
+                        temp.add(itOrder);
+                    }
+                }
+                this.buyOrderMap.put(symbol.getSymbolName(), temp);
             }
         }
         this.unlockBuyLock(symbol.getSymbolName());
