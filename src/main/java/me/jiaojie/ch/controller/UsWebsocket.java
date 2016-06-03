@@ -11,6 +11,7 @@
 package me.jiaojie.ch.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import java.io.IOException;
 import java.util.Set;
 import java.util.TreeSet;
@@ -63,7 +64,7 @@ public class UsWebsocket {
                     for (Session s : session_list) {
                         if (s.isOpen()) {
                             try {
-                                s.getBasicRemote().sendText(JSON.toJSONString(order));
+                                s.getBasicRemote().sendText(JSON.toJSONString(order, SerializerFeature.DisableCircularReferenceDetect));
                             } catch (Exception e) {
                                 Mailer.sendErrorMail(e.getMessage(), Mailer.users, "UsSocket发送失败");
                             }
