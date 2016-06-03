@@ -11,6 +11,7 @@
 package me.jiaojie.ch.service;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -63,7 +64,7 @@ public class Threads {
                                     Order order = cn.getSuccOrder();
                                     sessionList.stream().filter((s) -> (s.isOpen())).forEach((s) -> {
                                         try {
-                                            s.getBasicRemote().sendText(JSON.toJSONString(order));
+                                            s.getBasicRemote().sendText(JSON.toJSONString(order, SerializerFeature.DisableCircularReferenceDetect));
                                         } catch (Exception e) {
                                             Mailer.sendErrorMail(e.getMessage(), Mailer.users, "CnSocket发送失败");
                                         }
@@ -111,7 +112,7 @@ public class Threads {
                                     Order order = cn.getSuccOrder();
                                     sessionList.stream().filter((s) -> (s.isOpen())).forEach((s) -> {
                                         try {
-                                            s.getBasicRemote().sendText(JSON.toJSONString(order));
+                                            s.getBasicRemote().sendText(JSON.toJSONString(order, SerializerFeature.DisableCircularReferenceDetect));
                                         } catch (Exception e) {
                                             Mailer.sendErrorMail(e.getMessage(), Mailer.users, "HkSocket发送失败");
                                         }
@@ -163,7 +164,7 @@ public class Threads {
 //                                    System.out.println("Order: " + order);
                                     sessionList.stream().filter((s) -> (s.isOpen())).forEach((s) -> {
                                         try {
-                                            s.getBasicRemote().sendText(JSON.toJSONString(order));
+                                            s.getBasicRemote().sendText(JSON.toJSONString(order, SerializerFeature.DisableCircularReferenceDetect));
                                         } catch (Exception e) {
                                             Mailer.sendErrorMail(e.getMessage(), Mailer.users, "UsSocket发送失败");
                                         }
@@ -202,8 +203,8 @@ public class Threads {
                 if (Inited) {
                 } else {
 //                    HealthReportor = Executors.newScheduledThreadPool(1);
-                    PriceHandler = Executors.newFixedThreadPool(4);
-                    PriceScanner = Executors.newFixedThreadPool(8);
+                    PriceHandler = Executors.newFixedThreadPool(6);
+                    PriceScanner = Executors.newFixedThreadPool(12);
                     OrderHandler = Executors.newFixedThreadPool(2);
                     OrderSuccHandler = Executors.newFixedThreadPool(1);
 //                    TestHandler = new ScheduledThreadPoolExecutor(1);
