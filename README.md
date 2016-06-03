@@ -175,7 +175,7 @@ Price Compare System
 
 ## Remaining orders
 * url
-> http://172.16.7.27:8080/test/{projectName}/<buy/sell>/{symbolName}
+> `http://172.16.7.27:8080/test/{projectName}/<buy/sell>/{symbolName}`
 
 * method
 > `GET`
