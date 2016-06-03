@@ -59,7 +59,6 @@ public class UsWebsocket {
             try {
                 Trade project = Us.getInstance();
                 Order order = project.getSuccOrder();
-                System.out.println("Order: " + order);
                 while (null != order) {
                     for (Session s : session_list) {
                         if (s.isOpen()) {
@@ -89,7 +88,6 @@ public class UsWebsocket {
         try {
             Trade project = Cn.getInstance();
             Order order = project.getSuccOrder();
-            System.out.println("Order: " + order);
             if (null != order) {
                 session_list.stream().filter((s) -> (s.isOpen())).forEach((s) -> {
                     try {
