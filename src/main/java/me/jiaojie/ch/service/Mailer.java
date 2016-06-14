@@ -112,6 +112,7 @@ public class Mailer {
      * @deprecated @param Utf8String
      * @return
      */
+    @Deprecated
     public static String toGBK(String Utf8String) {
         try {
             String utf8 = new String(Utf8String.getBytes("UTF-8"));
